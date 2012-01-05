@@ -25,7 +25,7 @@ import org.gradle.api.Project
 import org.gradle.api.Plugin
 
 
-class LiquibasePlugin implements Plugin<Project> {
+class MySQLPlugin implements Plugin<Project> {
 
 
     void apply(Project project) {
