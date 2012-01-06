@@ -8,14 +8,12 @@ repositories {
     mavenCentral()
 }
 
-configurations {
-    flyway
-}
-
 dependencies {
     compile gradleApi()
+
+    compile group: "com.googlecode.flyway", name: "flyway-ant", version: "1.5"
+    compile group: "mysql", name: "mysql-connector-java", version: "5.0.5"
+
     groovy 'org.codehaus.groovy:groovy:1.8.0'
 
-    flyway group: "com.googlecode.flyway", name: "flyway-ant", version: "1.5"
-    flyway group: "mysql", name: "mysql-connector-java", version: "5.0.5"
 }
