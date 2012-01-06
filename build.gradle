@@ -8,6 +8,10 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    flyway
+}
+
 dependencies {
     compile gradleApi()
     groovy 'org.codehaus.groovy:groovy:1.8.0'
