@@ -25,9 +25,9 @@ import org.gradle.api.NamedDomainObjectContainer
 
 
 class MySQLDatabaseConvention {
-    final NamedDomainObjectContainer<Database> databases
+    final NamedDomainObjectContainer<MySQLDatabase> databases
 
-    MySQLDatabaseConvention(NamedDomainObjectContainer<Database> databases) {
+    MySQLDatabaseConvention(NamedDomainObjectContainer<MySQLDatabase> databases) {
         this.databases = databases
     }
 

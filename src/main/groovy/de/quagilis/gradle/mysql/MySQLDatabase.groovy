@@ -22,14 +22,14 @@
 package de.quagilis.gradle.mysql
 
 
-class Database
+class MySQLDatabase
 {
     def url
     def name
     def username
     def password
 
-    Database(String name) {
+    MySQLDatabase(String name) {
         this.name = name
     }
 }

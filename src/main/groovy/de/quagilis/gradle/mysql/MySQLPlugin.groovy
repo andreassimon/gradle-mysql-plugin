@@ -35,8 +35,8 @@ class MySQLPlugin implements Plugin<Project> {
 
 
     void applyConvention(Project project) {
-        def databases = project.container(Database) { name ->
-            new Database(name)
+        def databases = project.container(MySQLDatabase) { name ->
+            new MySQLDatabase(name)
         }
         project.convention.plugins.mysql =
             new MySQLDatabaseConvention(databases)
