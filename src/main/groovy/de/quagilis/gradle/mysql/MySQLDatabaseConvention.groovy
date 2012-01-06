@@ -41,10 +41,7 @@ class MySQLDatabaseConvention {
             def createDatabaseTask = newCreateDatabaseTask(database)
             def dropDatabaseTask   = newDropDatabaseTask(database)
 
-            def initDatabaseTask = project.task(group: "Flyway", description: "Inits the Flyway schema table for ${ database.name } database", "init${ database.name.capitalize() }Database") {
-            }
-
-            initDatabaseTask << {
+            def initDatabaseTask = project.task(group: "Flyway", description: "Inits the Flyway schema table for ${ database.name } database", "init${ database.name.capitalize() }Database") << {
                 ant.taskdef(
                     name: 'flywayInit',
                     classname: 'com.googlecode.flyway.ant.InitTask',
