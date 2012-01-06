@@ -7,4 +7,7 @@ repositories {
 dependencies {
     compile gradleApi()
     groovy 'org.codehaus.groovy:groovy:1.8.0'
+
+    flyway group: "com.googlecode.flyway", name: "flyway-ant", version: "1.5"
+    flyway group: "mysql", name: "mysql-connector-java", version: "5.0.5"
 }
