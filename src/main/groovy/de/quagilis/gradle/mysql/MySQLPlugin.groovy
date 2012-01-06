@@ -34,6 +34,4 @@ class MySQLPlugin implements Plugin<Project> {
             new MySQLDatabaseConvention(project, databases)
     }
 
-
 }
-
