@@ -23,6 +23,7 @@ package de.quagilis.gradle.mysql;
 
 import org.gradle.api.Project
 import org.gradle.api.Plugin
+import de.quagilis.gradle.mysql.tasks.CreateMySQLDatabase
 
 
 class MySQLPlugin implements Plugin<Project> {
@@ -44,6 +45,9 @@ class MySQLPlugin implements Plugin<Project> {
 
 
     void applyTasks(Project project) {
+        def database = new MySQLDatabase("Test")
+        database.schema = "web2print_test"
+        project.task(type: CreateMySQLDatabase, description: "Creates ${ database.schema } database", "create${ database.name }Database")
     }
 
 }

@@ -24,8 +24,9 @@ package de.quagilis.gradle.mysql
 
 class MySQLDatabase
 {
-    def url
     def name
+    def url
+    def schema
     def username
     def password
 
