@@ -28,6 +28,10 @@ import org.gradle.api.tasks.TaskAction
 class Composite extends DefaultTask {
     def subtasks = []
 
+    public Composite() {
+        group = "Utility"
+    }
+
     @TaskAction
     public executeSubtasks() {
         if (subtasks.isEmpty()) {

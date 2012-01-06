@@ -35,6 +35,7 @@ abstract class MySQLTask extends DefaultTask {
 
 
     public MySQLTask() {
+        group = "MySQL"
         addBuildscriptDependenciesToGroovyClassloader()
     }
 
