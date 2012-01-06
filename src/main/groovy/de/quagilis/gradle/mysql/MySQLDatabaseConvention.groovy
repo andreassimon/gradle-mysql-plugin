@@ -22,7 +22,7 @@
 package de.quagilis.gradle.mysql
 
 import org.gradle.api.*
-import de.quagilis.gradle.mysql.tasks.CreateMySQLDatabase
+import de.quagilis.gradle.mysql.tasks.*
 
 
 class MySQLDatabaseConvention {
@@ -39,6 +39,7 @@ class MySQLDatabaseConvention {
 
         databases.each { database ->
             def createDatabaseTask = newCreateDatabaseTask(database)
+            def dropDatabaseTask   = newDropDatabaseTask(database)
         }
     }
 
@@ -50,4 +51,14 @@ class MySQLDatabaseConvention {
             databaseName = database.schema
         }
     }
+
+    private Task newDropDatabaseTask(MySQLDatabase database) {
+        return project.task(type: DropMySQLDatabase, description: "Drops ${ database.name } database", "drop${ database.name.capitalize() }Database") {
+            url          = database.url
+            user         = database.username
+            password     = database.password;
+            databaseName = database.schema
+        }
+    }
+
 }
