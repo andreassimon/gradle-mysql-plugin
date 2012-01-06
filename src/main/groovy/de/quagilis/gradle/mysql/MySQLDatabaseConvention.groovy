@@ -38,14 +38,16 @@ class MySQLDatabaseConvention {
         databases.configure(closure)
 
         databases.each { database ->
-            def createDatabaseTask = project.task(type: CreateMySQLDatabase, description: "Creates ${ database.name } database", "create${ database.name.capitalize() }Database") {
-                url          = "jdbc:mysql://localhost/";
+            def createDatabaseTask = newCreateDatabaseTask(database)
+        }
+    }
 
-                user         = "root";
-                password     = "";
-
-                databaseName = database
-            }
+    private Task newCreateDatabaseTask(MySQLDatabase database) {
+        return project.task(type: CreateMySQLDatabase, description: "Creates ${ database.name } database", "create${ database.name.capitalize() }Database") {
+            url          = database.url
+            user         = database.username
+            password     = database.password;
+            databaseName = database.schema
         }
     }
 }

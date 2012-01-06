@@ -25,10 +25,10 @@ package de.quagilis.gradle.mysql
 class MySQLDatabase
 {
     def name
-    def url
+    def url      = "jdbc:mysql://localhost/"
     def schema
-    def username
-    def password
+    def username = "root"
+    def password = ""
 
     MySQLDatabase(String name) {
         this.name = name
