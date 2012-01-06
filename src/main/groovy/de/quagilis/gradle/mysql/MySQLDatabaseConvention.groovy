@@ -41,7 +41,7 @@ class MySQLDatabaseConvention {
             def createDatabaseTask = newCreateDatabaseTask(database)
             def dropDatabaseTask   = newDropDatabaseTask(database)
 
-            def initDatabaseTask = project.task(description: "Inits the Flyway schema table for ${ database.name } database", "init${ database.name.capitalize() }Database") {
+            def initDatabaseTask = project.task(group: "Flyway", description: "Inits the Flyway schema table for ${ database.name } database", "init${ database.name.capitalize() }Database") {
             }
 
             initDatabaseTask << {
