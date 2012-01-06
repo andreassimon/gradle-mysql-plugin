@@ -42,7 +42,6 @@ class MySQLDatabaseConvention {
             def dropDatabaseTask   = newDropDatabaseTask(database)
 
             def initDatabaseTask = project.task(description: "Inits the Flyway schema table for ${ database.name } database", "init${ database.name.capitalize() }Database") {
-                database_name = database.schema
             }
 
             initDatabaseTask << {
@@ -53,9 +52,9 @@ class MySQLDatabaseConvention {
 
                 ant.flywayInit(
                     driver:  'com.mysql.jdbc.Driver',
-                    url:     'jdbc:mysql://localhost',
-                    user:    'root',
-                    schemas: database_name)
+                    url:     database.url,
+                    user:    database.username,
+                    schemas: database.schema)
             }
         }
     }
