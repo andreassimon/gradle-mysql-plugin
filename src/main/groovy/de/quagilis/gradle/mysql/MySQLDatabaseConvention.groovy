@@ -21,17 +21,23 @@
 
 package de.quagilis.gradle.mysql
 
-import org.gradle.api.NamedDomainObjectContainer
+import org.gradle.api.*
 
 
 class MySQLDatabaseConvention {
+    final Project project;
     final NamedDomainObjectContainer<MySQLDatabase> databases
 
-    MySQLDatabaseConvention(NamedDomainObjectContainer<MySQLDatabase> databases) {
+    MySQLDatabaseConvention(Project project, NamedDomainObjectContainer<MySQLDatabase> databases) {
+        this.project   = project
         this.databases = databases
     }
 
     def databases(Closure closure) {
         databases.configure(closure)
+
+        databases.each { database ->
+            project.task "create_${ database.name }_database"
+        }
     }
 }
