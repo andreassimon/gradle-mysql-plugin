@@ -89,7 +89,6 @@ class MySQLDatabaseConvention {
             ant.flywayMigrate(
                     driver: 'com.mysql.jdbc.Driver',
                     url: "jdbc:mysql://localhost/${ database.schema }",
-//                    schemas: database.schema,
                     user: database.username,
                     password: database.password,
                     baseDir: 'migrations',
