@@ -74,6 +74,7 @@ class MySQLDatabaseConvention {
                     driver: 'com.mysql.jdbc.Driver',
                     url: database.url,
                     user: database.username,
+                    password: database.password,
                     schemas: database.schema)
         }
     }
