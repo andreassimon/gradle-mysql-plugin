@@ -37,6 +37,8 @@ class MySQLDatabaseConvention {
     def databases(Closure closure) {
         databases.configure(closure)
 
+        def setupAllDatabasesSubtasks = []
+
         databases.each { database ->
             def createDatabaseTask = newCreateDatabaseTask(database)
             def dropDatabaseTask   = newDropDatabaseTask(database)
@@ -45,7 +47,14 @@ class MySQLDatabaseConvention {
             project.task(type: Composite, group: "MySQL", description: "Resets the ${ database.name } database", "reset${ database.name.capitalize() }Database") {
                 subtasks = [dropDatabaseTask, createDatabaseTask, initDatabaseTask, migrateTask]
             }
+
+            setupAllDatabasesSubtasks << createDatabaseTask << initDatabaseTask << migrateTask
         }
+
+        project.task(type: Composite, group: "Developer Machine Setup", description: "Sets up the necessary databases on a new development machine", "setupAllDatabases") {
+            subtasks = setupAllDatabasesSubtasks
+        }
+
     }
 
     private Task newCreateDatabaseTask(MySQLDatabase database) {
