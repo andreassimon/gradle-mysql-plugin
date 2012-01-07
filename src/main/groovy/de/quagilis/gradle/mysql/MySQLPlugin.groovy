@@ -21,9 +21,7 @@
 
 package de.quagilis.gradle.mysql;
 
-import org.gradle.api.Project
-import org.gradle.api.Plugin
-import de.quagilis.gradle.mysql.tasks.CreateMySQLDatabase
+import org.gradle.api.*
 
 
 class MySQLPlugin implements Plugin<Project> {
@@ -32,6 +30,13 @@ class MySQLPlugin implements Plugin<Project> {
         def databases = project.container(MySQLDatabase)
         project.convention.plugins.mysql =
             new MySQLDatabaseConvention(project, databases)
+
+        project.configurations.add("gradleMysqlPlugin")
+
+        project.dependencies {
+            gradleMysqlPlugin "mysql:mysql-connector-java:5.0.5"
+            gradleMysqlPlugin "com.googlecode.flyway:flyway-ant:1.5"
+        }
     }
 
 }

@@ -97,7 +97,7 @@ class MySQLDatabaseConvention {
             ant.taskdef(
                     name: 'flywayInit',
                     classname: 'com.googlecode.flyway.ant.InitTask',
-                    classpath: project.buildscript.configurations.classpath.asPath)
+                    classpath: project.configurations.gradleMysqlPlugin.asPath)
 
             ant.flywayInit(
                     driver: 'com.mysql.jdbc.Driver',
@@ -111,7 +111,7 @@ class MySQLDatabaseConvention {
     private Task newMigrateDatabaseTask(MySQLDatabase database) {
         assert _migrationsDir != null;
         Task migrateTask = project.task(group: "Flyway", description: "Migrates the schema of the ${ database.name } database", "migrate${ database.name.capitalize() }Database")  << {
-            def antClasspath = project.buildscript.configurations.classpath + project.files(_migrationsDir)
+            def antClasspath = project.configurations.gradleMysqlPlugin + project.files(_migrationsDir)
             ant.taskdef(
                     name: 'flywayMigrate',
                     classname: 'com.googlecode.flyway.ant.MigrateTask',

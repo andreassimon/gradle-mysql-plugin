@@ -41,7 +41,7 @@ abstract class MySQLTask extends DefaultTask {
 
     private void addBuildscriptDependenciesToGroovyClassloader() {
         URLClassLoader loader = GroovyObject.class.classLoader
-        project.buildscript.configurations.classpath.each {File file ->
+        project.configurations.gradleMysqlPlugin.each {File file ->
             loader.addURL(file.toURL())
         }
     }
