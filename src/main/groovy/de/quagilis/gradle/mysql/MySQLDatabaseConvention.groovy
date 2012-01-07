@@ -37,24 +37,30 @@ class MySQLDatabaseConvention {
     def databases(Closure closure) {
         databases.configure(closure)
 
-        def setupAllDatabasesSubtasks = []
+        def setupAllDatabasesSubtasks   = []
+        def migrateAllDatabasesSubtasks = []
 
         databases.each { database ->
             def createDatabaseTask = newCreateDatabaseTask(database)
             def dropDatabaseTask   = newDropDatabaseTask(database)
             def initDatabaseTask   = newInitDatabaseTask(database)
             def migrateTask        = newMigrateDatabaseTask(database)
+
+            setupAllDatabasesSubtasks << createDatabaseTask << initDatabaseTask << migrateTask
+            migrateAllDatabasesSubtasks << migrateTask
+
             project.task(type: Composite, group: "MySQL", description: "Resets the ${ database.name } database", "reset${ database.name.capitalize() }Database") {
                 subtasks = [dropDatabaseTask, createDatabaseTask, initDatabaseTask, migrateTask]
             }
-
-            setupAllDatabasesSubtasks << createDatabaseTask << initDatabaseTask << migrateTask
         }
 
         project.task(type: Composite, group: "Developer Machine Setup", description: "Sets up the necessary databases on a new development machine", "setupAllDatabases") {
             subtasks = setupAllDatabasesSubtasks
         }
 
+        project.task(type: Composite, group: "Flyway", description: "Migrates all databases", "migrateAllDatabases") {
+            subtasks = migrateAllDatabasesSubtasks
+        }
     }
 
     private Task newCreateDatabaseTask(MySQLDatabase database) {
@@ -92,7 +98,7 @@ class MySQLDatabaseConvention {
     }
 
     private Task newMigrateDatabaseTask(MySQLDatabase database) {
-        Task migrateTask = project.task(group: "Flyway", description: "Migrates the schema of the ${ database.name } database", "migrate${ database.name.capitalize() }")  << {
+        Task migrateTask = project.task(group: "Flyway", description: "Migrates the schema of the ${ database.name } database", "migrate${ database.name.capitalize() }Database")  << {
             def antClasspath = project.buildscript.configurations.classpath + project.files(project.sourceSets.db.resources.srcDirs)
             ant.taskdef(
                     name: 'flywayMigrate',
