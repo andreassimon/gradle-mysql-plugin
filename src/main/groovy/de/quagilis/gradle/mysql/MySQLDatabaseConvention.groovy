@@ -42,6 +42,9 @@ class MySQLDatabaseConvention {
             def dropDatabaseTask   = newDropDatabaseTask(database)
             def initDatabaseTask   = newInitDatabaseTask(database)
             def migrateTask        = newMigrateDatabaseTask(database)
+            project.task(type: Composite, group: "MySQL", description: "Resets the ${ database.name } database", "reset${ database.name.capitalize() }Database") {
+                subtasks = [dropDatabaseTask, createDatabaseTask, initDatabaseTask, migrateTask]
+            }
         }
     }
 
