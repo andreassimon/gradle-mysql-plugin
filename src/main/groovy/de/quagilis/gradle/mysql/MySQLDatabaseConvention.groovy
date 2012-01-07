@@ -79,10 +79,8 @@ class MySQLDatabaseConvention {
     }
 
     private Task newMigrateDatabaseTask(MySQLDatabase database) {
-        Task migrateTask = project.task(group: "Flyway", description: "Migrates the schema of the ${ database.name } database", "migrate${ database.name.capitalize() }") {
-        }
-        migrateTask << {
-            antClasspath = project.buildscript.configurations.classpath + files(project.sourceSets.db.output.resourcesDir)
+        Task migrateTask = project.task(group: "Flyway", description: "Migrates the schema of the ${ database.name } database", "migrate${ database.name.capitalize() }")  << {
+            def antClasspath = project.buildscript.configurations.classpath + project.files(project.sourceSets.db.resources.srcDirs)
             ant.taskdef(
                     name: 'flywayMigrate',
                     classname: 'com.googlecode.flyway.ant.MigrateTask',
