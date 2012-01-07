@@ -80,7 +80,6 @@ class MySQLDatabaseConvention {
 
     private Task newMigrateDatabaseTask(MySQLDatabase database) {
         Task migrateTask = project.task(group: "Flyway", description: "Migrates the schema of the ${ database.name } database", "migrate${ database.name.capitalize() }") {
-            url = "jdbc:mysql://localhost/${ database.schema }"
         }
         migrateTask << {
             antClasspath = project.buildscript.configurations.classpath + files(project.sourceSets.db.output.resourcesDir)
@@ -91,8 +90,8 @@ class MySQLDatabaseConvention {
 
             ant.flywayMigrate(
                     driver: 'com.mysql.jdbc.Driver',
-                    url: database.url,
-                    schemas: database.schema,
+                    url: "jdbc:mysql://localhost/${ database.schema }",
+//                    schemas: database.schema,
                     user: database.username,
                     password: database.password,
                     baseDir: 'migrations',
