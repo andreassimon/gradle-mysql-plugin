@@ -41,6 +41,7 @@ class MySQLDatabaseConvention {
             def createDatabaseTask = newCreateDatabaseTask(database)
             def dropDatabaseTask   = newDropDatabaseTask(database)
             def initDatabaseTask   = newInitDatabaseTask(database)
+            def migrateTask        = newMigrateDatabaseTask(database)
         }
     }
 
@@ -75,6 +76,29 @@ class MySQLDatabaseConvention {
                     user: database.username,
                     schemas: database.schema)
         }
+    }
+
+    private Task newMigrateDatabaseTask(MySQLDatabase database) {
+        Task migrateTask = project.task(group: "Flyway", description: "Migrates the schema of the ${ database.name } database", "migrate${ database.name.capitalize() }") {
+            url = "jdbc:mysql://localhost/${ database.schema }"
+        }
+        migrateTask << {
+            antClasspath = project.buildscript.configurations.classpath + files(project.sourceSets.db.output.resourcesDir)
+            ant.taskdef(
+                    name: 'flywayMigrate',
+                    classname: 'com.googlecode.flyway.ant.MigrateTask',
+                    classpath: antClasspath.asPath)
+
+            ant.flywayMigrate(
+                    driver: 'com.mysql.jdbc.Driver',
+                    url: database.url,
+                    schemas: database.schema,
+                    user: database.username,
+                    password: database.password,
+                    baseDir: 'migrations',
+                    sqlMigrationPrefix: '')
+        }
+        return migrateTask;
     }
 
 }
