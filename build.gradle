@@ -2,7 +2,8 @@ apply plugin: 'groovy'
 apply plugin: 'maven'
 
 group   = 'andreassimon'
-version = '0.1.0'
+// Version 0.1.1 mit Tests
+version = '0.1.1-SNAPSHOT'
 
 repositories {
     mavenCentral()
