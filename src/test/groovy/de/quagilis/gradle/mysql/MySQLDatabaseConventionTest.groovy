@@ -35,6 +35,7 @@ public class MySQLDatabaseConventionTest {
     public void applyMySqlPlugin() {
         project.apply plugin: 'mysql'
 
+        project.migrationsDir = project.file("migrations")
     }
 
     @Test
@@ -61,6 +62,15 @@ public class MySQLDatabaseConventionTest {
         assertEquals("schema",   project.databases.development.schema)
         assertEquals("username", project.databases.development.username)
         assertEquals("password", project.databases.development.password)
+    }
+
+    @Test(expected=AssertionError)
+    public void shouldRequireMigrationsDirToBeSetWhenConfiguringDatabases() {
+        project.migrationsDir = null;
+
+        project.databases {
+            development
+        }
     }
 
 }

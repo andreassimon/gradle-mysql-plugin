@@ -28,18 +28,16 @@ import de.quagilis.gradle.mysql.tasks.*
 class MySQLDatabaseConvention {
     final Project project;
     final NamedDomainObjectContainer<MySQLDatabase> databases
-//    File _migrationsDir
+    File migrationsDir
 
     MySQLDatabaseConvention(Project project) {
         this.project   = project
         this.databases = project.container(MySQLDatabase)
     }
 
-//    def setMigrationsDir(File migrationsDir) {
-//        _migrationsDir = migrationsDir
-//    }
-//
     def databases(Closure closure) {
+        assert this.migrationsDir, "You must set the 'migrationsDir' property before configuring databases!";
+
         databases.configure(closure)
 
         def setupAllDatabasesSubtasks   = []
@@ -109,7 +107,6 @@ class MySQLDatabaseConvention {
     }
 
     private Task newMigrateDatabaseTask(MySQLDatabase database) {
-//        assert _migrationsDir != null;
         Task migrateTask = project.task(group: "Flyway", description: "Migrates the schema of the ${ database.name } database", "migrate${ database.name.capitalize() }Database")  << {
 //            def antClasspath = project.configurations.gradleMysqlPlugin + project.files(_migrationsDir)
 //            ant.taskdef(
