@@ -46,4 +46,21 @@ public class MySQLDatabaseConventionTest {
         assertTrue(project.databases.development instanceof MySQLDatabase)
     }
 
+    @Test
+    public void shouldFeedDatabaseConnectionPropertiesFromTheDatabasesClosure() {
+        project.databases {
+            development {
+                url      = "url"
+                schema   = "schema"
+                username = "username"
+                password = "password"
+            }
+        }
+
+        assertEquals("url",      project.databases.development.url)
+        assertEquals("schema",   project.databases.development.schema)
+        assertEquals("username", project.databases.development.username)
+        assertEquals("password", project.databases.development.password)
+    }
+
 }

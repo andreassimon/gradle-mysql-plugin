@@ -28,11 +28,11 @@ import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 class MySQLDatabase {
     def name
-//    def url      = "jdbc:mysql://localhost/"
-//    def schema
-//    def username = "root"
-//    def password = ""
-//
+    def url      = "jdbc:mysql://localhost/"
+    def schema
+    def username = "root"
+    def password = ""
+
     MySQLDatabase(String name) {
         this.name = name
     }
