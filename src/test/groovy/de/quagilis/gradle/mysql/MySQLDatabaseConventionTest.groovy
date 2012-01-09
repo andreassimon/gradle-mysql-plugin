@@ -34,11 +34,7 @@ public class MySQLDatabaseConventionTest {
     @BeforeClass
     public static void applyMySqlPlugin() {
         project.apply plugin: 'mysql'
-    }
 
-    @Test
-    public void shouldAddDatabasesMethodToProject() {
-        project.databases { }
     }
 
     @Test
