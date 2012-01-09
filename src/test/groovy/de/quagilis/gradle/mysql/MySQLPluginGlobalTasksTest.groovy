@@ -54,8 +54,23 @@ class MySQLPluginGlobalTasksTest {
              project.tasks.migrateDevelopmentDatabase,
              project.tasks.migrateProductionDatabase]
         assertTrue(
-            "${ migrateAllDatabasesTask } should contain ${ expectedSubtasks }",
+            "${ migrateAllDatabasesTask } should contain ${ expectedSubtasks }, but was ${ migrateAllDatabasesTask.subtasks }",
             migrateAllDatabasesTask.subtasks.containsAll(expectedSubtasks))
+    }
+
+    @Test
+    public void shouldAddDropAllDatabasesTaskToProject() {
+        def dropAllDatabasesTask = project.tasks.dropAllDatabases
+
+        assertTrue(dropAllDatabasesTask instanceof Composite)
+
+        def expectedSubtasks =
+            [project.tasks.dropTestDatabase,
+             project.tasks.dropDevelopmentDatabase,
+             project.tasks.dropProductionDatabase]
+        assertTrue(
+            "${ dropAllDatabasesTask } should contain ${ expectedSubtasks }, but was ${ dropAllDatabasesTask.subtasks }",
+            dropAllDatabasesTask.subtasks.containsAll(expectedSubtasks))
     }
 
 }

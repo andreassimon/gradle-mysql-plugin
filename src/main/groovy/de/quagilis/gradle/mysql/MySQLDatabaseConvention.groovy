@@ -44,8 +44,8 @@ class MySQLDatabaseConvention {
 
 //        def setupAllDatabasesSubtasks   = []
         def migrateAllDatabasesSubtasks = []
-//        def dropAllDependencies         = []
-//
+        def dropAllDependencies         = []
+
         databases.each { database ->
             def createDatabaseTask  = newCreateDatabaseTask(database)
             def dropDatabaseTask    = newDropDatabaseTask(database)
@@ -54,8 +54,8 @@ class MySQLDatabaseConvention {
 //
 //            setupAllDatabasesSubtasks << createDatabaseTask << initDatabaseTask << migrateTask
             migrateAllDatabasesSubtasks << migrateDatabaseTask
-//            dropAllDependencies         << dropDatabaseTask
-//
+            dropAllDependencies         << dropDatabaseTask
+
             project.task(type: Composite, group: "MySQL", description: "Resets the ${ database.name } database", "reset${ database.name.capitalize() }Database") {
                 subtasks = [dropDatabaseTask, createDatabaseTask, initDatabaseTask, migrateDatabaseTask]
             }
@@ -69,9 +69,9 @@ class MySQLDatabaseConvention {
             subtasks = migrateAllDatabasesSubtasks
         }
 
-//        project.task(type: Composite, group: "MySQL", description: "Drops all databases", "dropAllDatabases") {
-//            subtasks = dropAllDependencies
-//        }
+        project.task(type: Composite, group: "MySQL", description: "Drops all databases", "dropAllDatabases") {
+            subtasks = dropAllDependencies
+        }
     }
 
     private Task newCreateDatabaseTask(MySQLDatabase database) {
