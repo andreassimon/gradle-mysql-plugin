@@ -56,9 +56,9 @@ class MySQLDatabaseConvention {
 //            migrateAllDatabasesSubtasks << migrateTask
 //            dropAllDependencies         << dropDatabaseTask
 //
-//            project.task(type: Composite, group: "MySQL", description: "Resets the ${ database.name } database", "reset${ database.name.capitalize() }Database") {
-//                subtasks = [dropDatabaseTask, createDatabaseTask, initDatabaseTask, migrateTask]
-//            }
+            project.task(type: Composite, group: "MySQL", description: "Resets the ${ database.name } database", "reset${ database.name.capitalize() }Database") {
+                subtasks = [dropDatabaseTask, createDatabaseTask, initDatabaseTask, migrateDatabaseTask]
+            }
         }
 //
 //        project.task(type: Composite, group: "Developer Machine Setup", description: "Sets up the necessary databases on a new development machine", "setupAllDatabases") {

@@ -60,4 +60,18 @@ class MySQLPluginTasksTest {
         assertTrue(project.tasks.migrateDevelopmentDatabase instanceof DefaultTask)
     }
 
+    @Test
+    public void shouldAddResetDatabaseTaskToProject() {
+        def resetDatabaseTask = project.tasks.resetDevelopmentDatabase
+
+        assertTrue(resetDatabaseTask instanceof Composite)
+        assertEquals(
+            [project.tasks.dropDevelopmentDatabase,
+             project.tasks.createDevelopmentDatabase,
+             project.tasks.initDevelopmentDatabase,
+             project.tasks.migrateDevelopmentDatabase],
+            resetDatabaseTask.subtasks
+        )
+    }
+
 }

@@ -26,8 +26,8 @@ import org.gradle.api.tasks.TaskAction
 
 
 class Composite extends DefaultTask {
-//    def subtasks = []
-//
+    def subtasks = []
+
 //    public Composite() {
 //        group = "Utility"
 //    }
