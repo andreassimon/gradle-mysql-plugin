@@ -26,106 +26,106 @@ import de.quagilis.gradle.mysql.tasks.*
 
 
 class MySQLDatabaseConvention {
-    final Project project;
-    final NamedDomainObjectContainer<MySQLDatabase> databases
-    File _migrationsDir
+//    final Project project;
+//    final NamedDomainObjectContainer<MySQLDatabase> databases
+//    File _migrationsDir
 
-    MySQLDatabaseConvention(Project project, NamedDomainObjectContainer<MySQLDatabase> databases) {
-        this.project   = project
-        this.databases = databases
-    }
+//    MySQLDatabaseConvention(Project project) {
+//        this.project   = project
+//        this.databases = project.container(MySQLDatabase)
+//    }
 
-    def setMigrationsDir(File migrationsDir) {
-        _migrationsDir = migrationsDir
-    }
-
-    def databases(Closure closure) {
-        databases.configure(closure)
-
-        def setupAllDatabasesSubtasks   = []
-        def migrateAllDatabasesSubtasks = []
-        def dropAllDependencies         = []
-
-        databases.each { database ->
-            def createDatabaseTask = newCreateDatabaseTask(database)
-            def dropDatabaseTask   = newDropDatabaseTask(database)
-            def initDatabaseTask   = newInitDatabaseTask(database)
-            def migrateTask        = newMigrateDatabaseTask(database)
-
-            setupAllDatabasesSubtasks << createDatabaseTask << initDatabaseTask << migrateTask
-            migrateAllDatabasesSubtasks << migrateTask
-            dropAllDependencies         << dropDatabaseTask
-
-            project.task(type: Composite, group: "MySQL", description: "Resets the ${ database.name } database", "reset${ database.name.capitalize() }Database") {
-                subtasks = [dropDatabaseTask, createDatabaseTask, initDatabaseTask, migrateTask]
-            }
-        }
-
-        project.task(type: Composite, group: "Developer Machine Setup", description: "Sets up the necessary databases on a new development machine", "setupAllDatabases") {
-            subtasks = setupAllDatabasesSubtasks
-        }
-
-        project.task(type: Composite, group: "Flyway", description: "Migrates all databases", "migrateAllDatabases") {
-            subtasks = migrateAllDatabasesSubtasks
-        }
-
-        project.task(type: Composite, group: "MySQL", description: "Drops all databases", "dropAllDatabases") {
-            subtasks = dropAllDependencies
-        }
-    }
-
-    private Task newCreateDatabaseTask(MySQLDatabase database) {
-        return project.task(type: CreateMySQLDatabase, description: "Creates ${ database.name } database", "create${ database.name.capitalize() }Database") {
-            url          = database.url
-            user         = database.username
-            password     = database.password;
-            databaseName = database.schema
-        }
-    }
-
-    private Task newDropDatabaseTask(MySQLDatabase database) {
-        return project.task(type: DropMySQLDatabase, description: "Drops ${ database.name } database", "drop${ database.name.capitalize() }Database") {
-            url          = database.url
-            user         = database.username
-            password     = database.password;
-            databaseName = database.schema
-        }
-    }
-
-    private Task newInitDatabaseTask(MySQLDatabase database) {
-        project.task(group: "Flyway", description: "Inits the Flyway schema table for ${ database.name } database", "init${ database.name.capitalize() }Database") << {
-            ant.taskdef(
-                    name: 'flywayInit',
-                    classname: 'com.googlecode.flyway.ant.InitTask',
-                    classpath: project.configurations.gradleMysqlPlugin.asPath)
-
-            ant.flywayInit(
-                    driver: 'com.mysql.jdbc.Driver',
-                    url: database.url,
-                    user: database.username,
-                    password: database.password,
-                    schemas: database.schema)
-        }
-    }
-
-    private Task newMigrateDatabaseTask(MySQLDatabase database) {
-        assert _migrationsDir != null;
-        Task migrateTask = project.task(group: "Flyway", description: "Migrates the schema of the ${ database.name } database", "migrate${ database.name.capitalize() }Database")  << {
-            def antClasspath = project.configurations.gradleMysqlPlugin + project.files(_migrationsDir)
-            ant.taskdef(
-                    name: 'flywayMigrate',
-                    classname: 'com.googlecode.flyway.ant.MigrateTask',
-                    classpath: antClasspath.asPath)
-
-            ant.flywayMigrate(
-                    driver: 'com.mysql.jdbc.Driver',
-                    url: "jdbc:mysql://localhost/${ database.schema }",
-                    user: database.username,
-                    password: database.password,
-                    baseDir: '',
-                    sqlMigrationPrefix: '')
-        }
-        return migrateTask;
-    }
+//    def setMigrationsDir(File migrationsDir) {
+//        _migrationsDir = migrationsDir
+//    }
+//
+//    def databases(Closure closure) {
+//        databases.configure(closure)
+//
+//        def setupAllDatabasesSubtasks   = []
+//        def migrateAllDatabasesSubtasks = []
+//        def dropAllDependencies         = []
+//
+//        databases.each { database ->
+//            def createDatabaseTask = newCreateDatabaseTask(database)
+//            def dropDatabaseTask   = newDropDatabaseTask(database)
+//            def initDatabaseTask   = newInitDatabaseTask(database)
+//            def migrateTask        = newMigrateDatabaseTask(database)
+//
+//            setupAllDatabasesSubtasks << createDatabaseTask << initDatabaseTask << migrateTask
+//            migrateAllDatabasesSubtasks << migrateTask
+//            dropAllDependencies         << dropDatabaseTask
+//
+//            project.task(type: Composite, group: "MySQL", description: "Resets the ${ database.name } database", "reset${ database.name.capitalize() }Database") {
+//                subtasks = [dropDatabaseTask, createDatabaseTask, initDatabaseTask, migrateTask]
+//            }
+//        }
+//
+//        project.task(type: Composite, group: "Developer Machine Setup", description: "Sets up the necessary databases on a new development machine", "setupAllDatabases") {
+//            subtasks = setupAllDatabasesSubtasks
+//        }
+//
+//        project.task(type: Composite, group: "Flyway", description: "Migrates all databases", "migrateAllDatabases") {
+//            subtasks = migrateAllDatabasesSubtasks
+//        }
+//
+//        project.task(type: Composite, group: "MySQL", description: "Drops all databases", "dropAllDatabases") {
+//            subtasks = dropAllDependencies
+//        }
+//    }
+//
+//    private Task newCreateDatabaseTask(MySQLDatabase database) {
+//        return project.task(type: CreateMySQLDatabase, description: "Creates ${ database.name } database", "create${ database.name.capitalize() }Database") {
+//            url          = database.url
+//            user         = database.username
+//            password     = database.password;
+//            databaseName = database.schema
+//        }
+//    }
+//
+//    private Task newDropDatabaseTask(MySQLDatabase database) {
+//        return project.task(type: DropMySQLDatabase, description: "Drops ${ database.name } database", "drop${ database.name.capitalize() }Database") {
+//            url          = database.url
+//            user         = database.username
+//            password     = database.password;
+//            databaseName = database.schema
+//        }
+//    }
+//
+//    private Task newInitDatabaseTask(MySQLDatabase database) {
+//        project.task(group: "Flyway", description: "Inits the Flyway schema table for ${ database.name } database", "init${ database.name.capitalize() }Database") << {
+//            ant.taskdef(
+//                    name: 'flywayInit',
+//                    classname: 'com.googlecode.flyway.ant.InitTask',
+//                    classpath: project.configurations.gradleMysqlPlugin.asPath)
+//
+//            ant.flywayInit(
+//                    driver: 'com.mysql.jdbc.Driver',
+//                    url: database.url,
+//                    user: database.username,
+//                    password: database.password,
+//                    schemas: database.schema)
+//        }
+//    }
+//
+//    private Task newMigrateDatabaseTask(MySQLDatabase database) {
+//        assert _migrationsDir != null;
+//        Task migrateTask = project.task(group: "Flyway", description: "Migrates the schema of the ${ database.name } database", "migrate${ database.name.capitalize() }Database")  << {
+//            def antClasspath = project.configurations.gradleMysqlPlugin + project.files(_migrationsDir)
+//            ant.taskdef(
+//                    name: 'flywayMigrate',
+//                    classname: 'com.googlecode.flyway.ant.MigrateTask',
+//                    classpath: antClasspath.asPath)
+//
+//            ant.flywayMigrate(
+//                    driver: 'com.mysql.jdbc.Driver',
+//                    url: "jdbc:mysql://localhost/${ database.schema }",
+//                    user: database.username,
+//                    password: database.password,
+//                    baseDir: '',
+//                    sqlMigrationPrefix: '')
+//        }
+//        return migrateTask;
+//    }
 
 }

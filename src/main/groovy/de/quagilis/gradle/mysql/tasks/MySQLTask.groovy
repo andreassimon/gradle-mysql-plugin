@@ -27,70 +27,70 @@ import org.gradle.api.DefaultTask
 
 
 abstract class MySQLTask extends DefaultTask {
-    def driver        = "com.mysql.jdbc.Driver"
-    def url           = "jdbc:mysql://localhost/"
-    def user          = "root"
-    def password      = "password"
-    def databaseName
-
-
-    public MySQLTask() {
-        group = "MySQL"
-        addBuildscriptDependenciesToGroovyClassloader()
-    }
-
-    private void addBuildscriptDependenciesToGroovyClassloader() {
-        URLClassLoader loader = GroovyObject.class.classLoader
-        project.configurations.gradleMysqlPlugin.each {File file ->
-            loader.addURL(file.toURL())
-        }
-    }
-
-    @TaskAction
-    public void createTestDatabase() {
-        def stmt = null;
-        def conn = null
-        try {
-            registerJdbcDriver()
-            conn = openConnection()
-            executeStatement(conn, databaseName)
-        } catch(SQLException e) {
-            logger.warn "\t" + e.getMessage()
-        } catch(Exception e) {
-            logger.error e.toString()
-        } finally {
-            closeResource(stmt)
-            closeResource(conn)
-        }
-    }
-
-    private void registerJdbcDriver() {
-        Class.forName(driver);
-    }
-
-    private Connection openConnection() {
-        logger.debug "Connecting to database...";
-        conn = DriverManager.getConnection(url, user, password);
-    }
-
-    private void executeStatement(connection, database) {
-        logger.debug "Creating database...";
-        stmt = conn.createStatement();
-        command = sql(database)
-        logger.info "Execute '${ command }'"
-        stmt.executeUpdate(command);
-        logger.debug "Database created successfully...";
-    }
-
-    def abstract sql(databasename)
-
-    private void closeResource(resource) {
-        try{
-            if(resource != null) {
-              resource.close()
-            }
-        } catch(SQLException se) {
-            logger.error se
-        }
-    }
+//    def driver        = "com.mysql.jdbc.Driver"
+//    def url           = "jdbc:mysql://localhost/"
+//    def user          = "root"
+//    def password      = "password"
+//    def databaseName
+//
+//
+//    public MySQLTask() {
+//        group = "MySQL"
+//        addBuildscriptDependenciesToGroovyClassloader()
+//    }
+//
+//    private void addBuildscriptDependenciesToGroovyClassloader() {
+//        URLClassLoader loader = GroovyObject.class.classLoader
+//        project.configurations.gradleMysqlPlugin.each {File file ->
+//            loader.addURL(file.toURL())
+//        }
+//    }
+//
+//    @TaskAction
+//    public void createTestDatabase() {
+//        def stmt = null;
+//        def conn = null
+//        try {
+//            registerJdbcDriver()
+//            conn = openConnection()
+//            executeStatement(conn, databaseName)
+//        } catch(SQLException e) {
+//            logger.warn "\t" + e.getMessage()
+//        } catch(Exception e) {
+//            logger.error e.toString()
+//        } finally {
+//            closeResource(stmt)
+//            closeResource(conn)
+//        }
+//    }
+//
+//    private void registerJdbcDriver() {
+//        Class.forName(driver);
+//    }
+//
+//    private Connection openConnection() {
+//        logger.debug "Connecting to database...";
+//        conn = DriverManager.getConnection(url, user, password);
+//    }
+//
+//    private void executeStatement(connection, database) {
+//        logger.debug "Creating database...";
+//        stmt = conn.createStatement();
+//        command = sql(database)
+//        logger.info "Execute '${ command }'"
+//        stmt.executeUpdate(command);
+//        logger.debug "Database created successfully...";
+//    }
+//
+//    def abstract sql(databasename)
+//
+//    private void closeResource(resource) {
+//        try{
+//            if(resource != null) {
+//              resource.close()
+//            }
+//        } catch(SQLException se) {
+//            logger.error se
+//        }
+//    }
 }

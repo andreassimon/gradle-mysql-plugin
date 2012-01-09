@@ -26,20 +26,20 @@ import org.gradle.api.tasks.TaskAction
 
 
 class Composite extends DefaultTask {
-    def subtasks = []
-
-    public Composite() {
-        group = "Utility"
-    }
-
-    @TaskAction
-    public executeSubtasks() {
-        if (subtasks.isEmpty()) {
-          logger.warn "Composite task " + path + " has no subtasks"
-        }
-        subtasks.each { subtask ->
-            println "\t" + subtask.path
-            subtask.execute()
-        }
-    }
+//    def subtasks = []
+//
+//    public Composite() {
+//        group = "Utility"
+//    }
+//
+//    @TaskAction
+//    public executeSubtasks() {
+//        if (subtasks.isEmpty()) {
+//          logger.warn "Composite task " + path + " has no subtasks"
+//        }
+//        subtasks.each { subtask ->
+//            println "\t" + subtask.path
+//            subtask.execute()
+//        }
+//    }
 }

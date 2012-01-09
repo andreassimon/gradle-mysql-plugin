@@ -23,24 +23,26 @@ package de.quagilis.gradle.mysql
 
 import javax.sql.DataSource
 
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+
 
 class MySQLDatabase
 {
-    def name
-    def url      = "jdbc:mysql://localhost/"
-    def schema
-    def username = "root"
-    def password = ""
-
-    MySQLDatabase(String name) {
-        this.name = name
-    }
-
-    DataSource getDataSource() {
-        DataSource dataSource = new com.mysql.jdbc.jdbc2.optional.MysqlDataSource();
-        dataSource.setURL(url + schema)
-        dataSource.setUser(username)
-        dataSource.setPassword(password)
-        return dataSource;
-    }
+//    def name
+//    def url      = "jdbc:mysql://localhost/"
+//    def schema
+//    def username = "root"
+//    def password = ""
+//
+//    MySQLDatabase(String name) {
+//        this.name = name
+//    }
+//
+//    DataSource getDataSource() {
+//        DataSource dataSource = new MysqlDataSource();
+//        dataSource.setURL(url + schema)
+//        dataSource.setUser(username)
+//        dataSource.setPassword(password)
+//        return dataSource;
+//    }
 }

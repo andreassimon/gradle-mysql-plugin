@@ -27,16 +27,15 @@ import org.gradle.api.*
 class MySQLPlugin implements Plugin<Project> {
 
     void apply(Project project) {
-        def databases = project.container(MySQLDatabase)
-        project.convention.plugins.mysql =
-            new MySQLDatabaseConvention(project, databases)
-
-        project.configurations.add("gradleMysqlPlugin")
-
-        project.dependencies {
-            gradleMysqlPlugin "mysql:mysql-connector-java:5.0.5"
-            gradleMysqlPlugin "com.googlecode.flyway:flyway-ant:1.5"
-        }
+//        project.convention.plugins.mysql =
+//            new MySQLDatabaseConvention(project)
+//
+//        project.configurations.add("gradleMysqlPlugin")
+//
+//        project.dependencies {
+//            gradleMysqlPlugin "mysql:mysql-connector-java:5.0.5"
+//            gradleMysqlPlugin "com.googlecode.flyway:flyway-ant:1.5"
+//        }
     }
 
 }
