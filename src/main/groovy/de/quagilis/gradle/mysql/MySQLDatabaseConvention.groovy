@@ -42,7 +42,7 @@ class MySQLDatabaseConvention {
     def databases(Closure closure) {
         databases.configure(closure)
 
-//        def setupAllDatabasesSubtasks   = []
+        def setupAllDatabasesSubtasks   = []
         def migrateAllDatabasesSubtasks = []
         def dropAllDependencies         = []
 
@@ -51,8 +51,8 @@ class MySQLDatabaseConvention {
             def dropDatabaseTask    = newDropDatabaseTask(database)
             def initDatabaseTask    = newInitDatabaseTask(database)
             def migrateDatabaseTask = newMigrateDatabaseTask(database)
-//
-//            setupAllDatabasesSubtasks << createDatabaseTask << initDatabaseTask << migrateTask
+
+            setupAllDatabasesSubtasks   << createDatabaseTask << initDatabaseTask << migrateDatabaseTask
             migrateAllDatabasesSubtasks << migrateDatabaseTask
             dropAllDependencies         << dropDatabaseTask
 
@@ -60,11 +60,11 @@ class MySQLDatabaseConvention {
                 subtasks = [dropDatabaseTask, createDatabaseTask, initDatabaseTask, migrateDatabaseTask]
             }
         }
-//
-//        project.task(type: Composite, group: "Developer Machine Setup", description: "Sets up the necessary databases on a new development machine", "setupAllDatabases") {
-//            subtasks = setupAllDatabasesSubtasks
-//        }
-//
+
+        project.task(type: Composite, group: "Developer Machine Setup", description: "Sets up the necessary databases on a new development machine", "setupAllDatabases") {
+            subtasks = setupAllDatabasesSubtasks
+        }
+
         project.task(type: Composite, group: "Flyway", description: "Migrates all databases", "migrateAllDatabases") {
             subtasks = migrateAllDatabasesSubtasks
         }

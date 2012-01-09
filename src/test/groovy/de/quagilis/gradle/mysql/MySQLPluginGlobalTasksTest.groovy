@@ -25,6 +25,7 @@ import org.junit.*
 import static org.junit.Assert.*
 
 import org.gradle.api.Project;
+import org.gradle.api.Task
 import org.gradle.testfixtures.ProjectBuilder
 
 import de.quagilis.gradle.mysql.tasks.*
@@ -32,6 +33,7 @@ import de.quagilis.gradle.mysql.tasks.*
 
 class MySQLPluginGlobalTasksTest {
     Project project = ProjectBuilder.builder().build()
+    List<Task> allCreateTasks, allTasksForTestDatabase
 
     @Before
     public void applyPlugin() {
@@ -41,36 +43,102 @@ class MySQLPluginGlobalTasksTest {
             development
             production
         }
+
+        allCreateTasks =
+           [createTestDatabase,
+            createDevelopmentDatabase,
+            createProductionDatabase]
+        allTasksForTestDatabase =
+           [createTestDatabase,
+            initTestDatabase,
+            migrateTestDatabase]
     }
 
     @Test
     public void shouldAddMigrateAllDatabasesTaskToProject() {
-        def migrateAllDatabasesTask = project.tasks.migrateAllDatabases
-
-        assertTrue(migrateAllDatabasesTask instanceof Composite)
-
-        def expectedSubtasks =
-            [project.tasks.migrateTestDatabase,
-             project.tasks.migrateDevelopmentDatabase,
-             project.tasks.migrateProductionDatabase]
-        assertTrue(
-            "${ migrateAllDatabasesTask } should contain ${ expectedSubtasks }, but was ${ migrateAllDatabasesTask.subtasks }",
-            migrateAllDatabasesTask.subtasks.containsAll(expectedSubtasks))
+        assertTrue(migrateAllDatabases instanceof Composite)
+        assertCompositeContainsAllSubtasks(
+            migrateAllDatabases,
+                [migrateTestDatabase,
+                 migrateDevelopmentDatabase,
+                 migrateProductionDatabase])
     }
 
     @Test
     public void shouldAddDropAllDatabasesTaskToProject() {
-        def dropAllDatabasesTask = project.tasks.dropAllDatabases
+        assertTrue(dropAllDatabases instanceof Composite)
+        assertCompositeContainsAllSubtasks(
+            dropAllDatabases,
+                [dropTestDatabase,
+                 dropDevelopmentDatabase,
+                 dropProductionDatabase])
+    }
 
-        assertTrue(dropAllDatabasesTask instanceof Composite)
+    @Test
+    public void shouldAddSetupAllDatabasesTaskToProject() {
+        assertTrue(setupAllDatabases instanceof Composite)
+        assertCompositeContainsAllSubtasks(
+            setupAllDatabases, allCreateTasks)
+        assertCompositeContainsAllSubtasks(
+            setupAllDatabases, allTasksForTestDatabase)
+    }
 
-        def expectedSubtasks =
-            [project.tasks.dropTestDatabase,
-             project.tasks.dropDevelopmentDatabase,
-             project.tasks.dropProductionDatabase]
+    private void assertCompositeContainsAllSubtasks(Composite compositeTask, List<Task> expectedSubtasks) {
         assertTrue(
-            "${ dropAllDatabasesTask } should contain ${ expectedSubtasks }, but was ${ dropAllDatabasesTask.subtasks }",
-            dropAllDatabasesTask.subtasks.containsAll(expectedSubtasks))
+            "${ compositeTask } should contain ${ expectedSubtasks }, but was ${ compositeTask.subtasks }",
+            compositeTask.subtasks.containsAll(expectedSubtasks))
+    }
+
+    Composite getSetupAllDatabases() {
+        project.tasks.setupAllDatabases
+    }
+
+    Composite getDropAllDatabases() {
+        project.tasks.dropAllDatabases
+    }
+
+    Composite getMigrateAllDatabases() {
+        project.tasks.migrateAllDatabases
+    }
+
+    Task getCreateTestDatabase() {
+        project.tasks.createTestDatabase
+    }
+
+    Task getCreateDevelopmentDatabase() {
+        project.tasks.createDevelopmentDatabase
+    }
+
+    Task getCreateProductionDatabase() {
+        project.tasks.createProductionDatabase
+    }
+
+    Task getInitTestDatabase() {
+        project.tasks.initTestDatabase
+    }
+
+    Task getMigrateTestDatabase() {
+        project.tasks.migrateTestDatabase
+    }
+
+    Task getMigrateDevelopmentDatabase() {
+        project.tasks.migrateDevelopmentDatabase
+    }
+
+    Task getMigrateProductionDatabase() {
+        project.tasks.migrateProductionDatabase
+    }
+
+    Task getDropTestDatabase() {
+        project.tasks.dropDevelopmentDatabase
+    }
+
+    Task getDropDevelopmentDatabase() {
+        project.tasks.dropDevelopmentDatabase
+    }
+
+    Task getDropProductionDatabase() {
+        project.tasks.dropProductionDatabase
     }
 
 }
