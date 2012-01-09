@@ -22,6 +22,7 @@
 package de.quagilis.gradle.mysql;
 
 import org.junit.*
+import static org.junit.Assert.*
 
 import org.gradle.api.Project;
 import org.gradle.testfixtures.ProjectBuilder;
@@ -38,6 +39,15 @@ public class MySQLDatabaseConventionTest {
     @Test
     public void shouldAddDatabasesMethodToProject() {
         project.databases { }
+    }
+
+    @Test
+    public void shouldCreateADatabaseDomainObjectForEachElementInTheDatabasesClosure() {
+        project.databases {
+            development
+        }
+
+        assertTrue(project.databases.development instanceof MySQLDatabase)
     }
 
 }

@@ -26,18 +26,17 @@ import javax.sql.DataSource
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 
-class MySQLDatabase
-{
-//    def name
+class MySQLDatabase {
+    def name
 //    def url      = "jdbc:mysql://localhost/"
 //    def schema
 //    def username = "root"
 //    def password = ""
 //
-//    MySQLDatabase(String name) {
-//        this.name = name
-//    }
-//
+    MySQLDatabase(String name) {
+        this.name = name
+    }
+
 //    DataSource getDataSource() {
 //        DataSource dataSource = new MysqlDataSource();
 //        dataSource.setURL(url + schema)
