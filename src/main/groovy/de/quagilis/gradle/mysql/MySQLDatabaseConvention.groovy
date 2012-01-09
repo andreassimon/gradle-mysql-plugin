@@ -43,7 +43,7 @@ class MySQLDatabaseConvention {
         databases.configure(closure)
 
 //        def setupAllDatabasesSubtasks   = []
-//        def migrateAllDatabasesSubtasks = []
+        def migrateAllDatabasesSubtasks = []
 //        def dropAllDependencies         = []
 //
         databases.each { database ->
@@ -53,7 +53,7 @@ class MySQLDatabaseConvention {
             def migrateDatabaseTask = newMigrateDatabaseTask(database)
 //
 //            setupAllDatabasesSubtasks << createDatabaseTask << initDatabaseTask << migrateTask
-//            migrateAllDatabasesSubtasks << migrateTask
+            migrateAllDatabasesSubtasks << migrateDatabaseTask
 //            dropAllDependencies         << dropDatabaseTask
 //
             project.task(type: Composite, group: "MySQL", description: "Resets the ${ database.name } database", "reset${ database.name.capitalize() }Database") {
@@ -65,10 +65,10 @@ class MySQLDatabaseConvention {
 //            subtasks = setupAllDatabasesSubtasks
 //        }
 //
-//        project.task(type: Composite, group: "Flyway", description: "Migrates all databases", "migrateAllDatabases") {
-//            subtasks = migrateAllDatabasesSubtasks
-//        }
-//
+        project.task(type: Composite, group: "Flyway", description: "Migrates all databases", "migrateAllDatabases") {
+            subtasks = migrateAllDatabasesSubtasks
+        }
+
 //        project.task(type: Composite, group: "MySQL", description: "Drops all databases", "dropAllDatabases") {
 //            subtasks = dropAllDependencies
 //        }
