@@ -49,7 +49,7 @@ class MySQLDatabaseConvention {
         databases.each { database ->
             def createDatabaseTask = newCreateDatabaseTask(database)
             def dropDatabaseTask   = newDropDatabaseTask(database)
-//            def initDatabaseTask   = newInitDatabaseTask(database)
+            def initDatabaseTask   = newInitDatabaseTask(database)
 //            def migrateTask        = newMigrateDatabaseTask(database)
 //
 //            setupAllDatabasesSubtasks << createDatabaseTask << initDatabaseTask << migrateTask
@@ -92,8 +92,8 @@ class MySQLDatabaseConvention {
         }
     }
 
-//    private Task newInitDatabaseTask(MySQLDatabase database) {
-//        project.task(group: "Flyway", description: "Inits the Flyway schema table for ${ database.name } database", "init${ database.name.capitalize() }Database") << {
+    private Task newInitDatabaseTask(MySQLDatabase database) {
+        project.task(group: "Flyway", description: "Inits the Flyway schema table for ${ database.name } database", "init${ database.name.capitalize() }Database") << {
 //            ant.taskdef(
 //                    name: 'flywayInit',
 //                    classname: 'com.googlecode.flyway.ant.InitTask',
@@ -105,9 +105,9 @@ class MySQLDatabaseConvention {
 //                    user: database.username,
 //                    password: database.password,
 //                    schemas: database.schema)
-//        }
-//    }
-//
+        }
+    }
+
 //    private Task newMigrateDatabaseTask(MySQLDatabase database) {
 //        assert _migrationsDir != null;
 //        Task migrateTask = project.task(group: "Flyway", description: "Migrates the schema of the ${ database.name } database", "migrate${ database.name.capitalize() }Database")  << {

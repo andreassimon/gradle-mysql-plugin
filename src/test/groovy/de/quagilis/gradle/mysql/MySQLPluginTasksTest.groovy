@@ -24,6 +24,7 @@ package de.quagilis.gradle.mysql
 import org.junit.*
 import static org.junit.Assert.*
 
+import org.gradle.api.DefaultTask
 import org.gradle.api.Project;
 import org.gradle.testfixtures.ProjectBuilder
 
@@ -47,6 +48,11 @@ class MySQLPluginTasksTest {
     @Test
     public void shouldAddDropTestDatabaseTaskToProject() {
         assertTrue(project.tasks.dropDevelopmentDatabase instanceof DropMySQLDatabase)
+    }
+
+    @Test
+    public void shouldAddInitTestDatabaseTaskToProject() {
+        assertTrue(project.tasks.initDevelopmentDatabase instanceof DefaultTask)
     }
 
 }
