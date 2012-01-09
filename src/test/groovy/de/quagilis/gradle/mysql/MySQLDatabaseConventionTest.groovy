@@ -29,10 +29,10 @@ import org.gradle.testfixtures.ProjectBuilder;
 
 
 public class MySQLDatabaseConventionTest {
-    static Project project = ProjectBuilder.builder().build()
+    Project project = ProjectBuilder.builder().build()
 
-    @BeforeClass
-    public static void applyMySqlPlugin() {
+    @Before
+    public void applyMySqlPlugin() {
         project.apply plugin: 'mysql'
 
     }

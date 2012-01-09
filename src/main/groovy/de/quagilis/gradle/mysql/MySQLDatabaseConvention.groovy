@@ -46,8 +46,8 @@ class MySQLDatabaseConvention {
 //        def migrateAllDatabasesSubtasks = []
 //        def dropAllDependencies         = []
 //
-//        databases.each { database ->
-//            def createDatabaseTask = newCreateDatabaseTask(database)
+        databases.each { database ->
+            def createDatabaseTask = newCreateDatabaseTask(database)
 //            def dropDatabaseTask   = newDropDatabaseTask(database)
 //            def initDatabaseTask   = newInitDatabaseTask(database)
 //            def migrateTask        = newMigrateDatabaseTask(database)
@@ -59,7 +59,7 @@ class MySQLDatabaseConvention {
 //            project.task(type: Composite, group: "MySQL", description: "Resets the ${ database.name } database", "reset${ database.name.capitalize() }Database") {
 //                subtasks = [dropDatabaseTask, createDatabaseTask, initDatabaseTask, migrateTask]
 //            }
-//        }
+        }
 //
 //        project.task(type: Composite, group: "Developer Machine Setup", description: "Sets up the necessary databases on a new development machine", "setupAllDatabases") {
 //            subtasks = setupAllDatabasesSubtasks
@@ -73,16 +73,16 @@ class MySQLDatabaseConvention {
 //            subtasks = dropAllDependencies
 //        }
     }
-//
-//    private Task newCreateDatabaseTask(MySQLDatabase database) {
-//        return project.task(type: CreateMySQLDatabase, description: "Creates ${ database.name } database", "create${ database.name.capitalize() }Database") {
+
+    private Task newCreateDatabaseTask(MySQLDatabase database) {
+        return project.task(type: CreateMySQLDatabase, description: "Creates ${ database.name } database", "create${ database.name.capitalize() }Database") {
 //            url          = database.url
 //            user         = database.username
 //            password     = database.password;
 //            databaseName = database.schema
-//        }
-//    }
-//
+        }
+    }
+
 //    private Task newDropDatabaseTask(MySQLDatabase database) {
 //        return project.task(type: DropMySQLDatabase, description: "Drops ${ database.name } database", "drop${ database.name.capitalize() }Database") {
 //            url          = database.url
