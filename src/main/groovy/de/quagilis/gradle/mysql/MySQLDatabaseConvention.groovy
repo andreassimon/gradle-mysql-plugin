@@ -47,10 +47,10 @@ class MySQLDatabaseConvention {
 //        def dropAllDependencies         = []
 //
         databases.each { database ->
-            def createDatabaseTask = newCreateDatabaseTask(database)
-            def dropDatabaseTask   = newDropDatabaseTask(database)
-            def initDatabaseTask   = newInitDatabaseTask(database)
-//            def migrateTask        = newMigrateDatabaseTask(database)
+            def createDatabaseTask  = newCreateDatabaseTask(database)
+            def dropDatabaseTask    = newDropDatabaseTask(database)
+            def initDatabaseTask    = newInitDatabaseTask(database)
+            def migrateDatabaseTask = newMigrateDatabaseTask(database)
 //
 //            setupAllDatabasesSubtasks << createDatabaseTask << initDatabaseTask << migrateTask
 //            migrateAllDatabasesSubtasks << migrateTask
@@ -108,9 +108,9 @@ class MySQLDatabaseConvention {
         }
     }
 
-//    private Task newMigrateDatabaseTask(MySQLDatabase database) {
+    private Task newMigrateDatabaseTask(MySQLDatabase database) {
 //        assert _migrationsDir != null;
-//        Task migrateTask = project.task(group: "Flyway", description: "Migrates the schema of the ${ database.name } database", "migrate${ database.name.capitalize() }Database")  << {
+        Task migrateTask = project.task(group: "Flyway", description: "Migrates the schema of the ${ database.name } database", "migrate${ database.name.capitalize() }Database")  << {
 //            def antClasspath = project.configurations.gradleMysqlPlugin + project.files(_migrationsDir)
 //            ant.taskdef(
 //                    name: 'flywayMigrate',
@@ -124,8 +124,8 @@ class MySQLDatabaseConvention {
 //                    password: database.password,
 //                    baseDir: '',
 //                    sqlMigrationPrefix: '')
-//        }
-//        return migrateTask;
-//    }
+        }
+        return migrateTask;
+    }
 
 }
