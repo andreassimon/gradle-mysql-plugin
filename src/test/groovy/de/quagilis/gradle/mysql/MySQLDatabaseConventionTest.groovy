@@ -58,10 +58,11 @@ public class MySQLDatabaseConventionTest {
             }
         }
 
-        assertEquals("url",      project.databases.development.url)
-        assertEquals("schema",   project.databases.development.schema)
-        assertEquals("username", project.databases.development.username)
-        assertEquals("password", project.databases.development.password)
+        def developmentDatabase = project.databases.development
+        assertEquals("url",      developmentDatabase.url)
+        assertEquals("schema",   developmentDatabase.schema)
+        assertEquals("username", developmentDatabase.username)
+        assertEquals("password", developmentDatabase.password)
     }
 
     @Test(expected=AssertionError)
