@@ -21,6 +21,8 @@
 
 package de.quagilis.gradle.mysql
 
+import javax.sql.DataSource
+
 
 class MySQLDatabase
 {
@@ -32,5 +34,13 @@ class MySQLDatabase
 
     MySQLDatabase(String name) {
         this.name = name
+    }
+
+    DataSource getDataSource() {
+        DataSource dataSource = new com.mysql.jdbc.jdbc2.optional.MysqlDataSource();
+        dataSource.setURL(url + schema)
+        dataSource.setUser(username)
+        dataSource.setPassword(password)
+        return dataSource;
     }
 }
