@@ -38,7 +38,7 @@ class MySQLDatabaseConvention {
 //        _migrationsDir = migrationsDir
 //    }
 //
-//    def databases(Closure closure) {
+    def databases(Closure closure) {
 //        databases.configure(closure)
 //
 //        def setupAllDatabasesSubtasks   = []
@@ -71,7 +71,7 @@ class MySQLDatabaseConvention {
 //        project.task(type: Composite, group: "MySQL", description: "Drops all databases", "dropAllDatabases") {
 //            subtasks = dropAllDependencies
 //        }
-//    }
+    }
 //
 //    private Task newCreateDatabaseTask(MySQLDatabase database) {
 //        return project.task(type: CreateMySQLDatabase, description: "Creates ${ database.name } database", "create${ database.name.capitalize() }Database") {
