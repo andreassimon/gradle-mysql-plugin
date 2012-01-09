@@ -26,14 +26,13 @@ import de.quagilis.gradle.mysql.tasks.*
 
 
 class MySQLDatabaseConvention {
-//    final Project project;
+    final Project project;
 //    final NamedDomainObjectContainer<MySQLDatabase> databases
 //    File _migrationsDir
 
-//    MySQLDatabaseConvention(Project project) {
-//        this.project   = project
-//        this.databases = project.container(MySQLDatabase)
-//    }
+    MySQLDatabaseConvention(Project project) {
+        this.project   = project
+    }
 
 //    def setMigrationsDir(File migrationsDir) {
 //        _migrationsDir = migrationsDir

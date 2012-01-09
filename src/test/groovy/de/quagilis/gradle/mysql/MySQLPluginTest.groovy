@@ -19,23 +19,23 @@
  *
  */
 
-package de.quagilis.gradle.mysql;
+package de.quagilis.gradle.mysql
 
-import org.gradle.api.*
+import org.junit.Test
+import static org.junit.Assert.assertTrue
+
+import org.gradle.api.Project
+import org.gradle.testfixtures.ProjectBuilder
 
 
-class MySQLPlugin implements Plugin<Project> {
+public class MySQLPluginTest {
+    static Project project = ProjectBuilder.builder().build()
 
-    void apply(Project project) {
-        project.convention.plugins.mysql =
-            new MySQLDatabaseConvention(project)
-//
-//        project.configurations.add("gradleMysqlPlugin")
-//
-//        project.dependencies {
-//            gradleMysqlPlugin "mysql:mysql-connector-java:5.0.5"
-//            gradleMysqlPlugin "com.googlecode.flyway:flyway-ant:1.5"
-//        }
+    @Test
+    public void shouldAddMySQLDatabaseConventionToProject() {
+        project.apply plugin: 'mysql'
+
+        assertTrue("The plugin should add the MySQLDatabaseConvention to the project", project.convention.plugins.mysql instanceof MySQLDatabaseConvention)
     }
 
 }
