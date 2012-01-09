@@ -48,7 +48,7 @@ class MySQLDatabaseConvention {
 //
         databases.each { database ->
             def createDatabaseTask = newCreateDatabaseTask(database)
-//            def dropDatabaseTask   = newDropDatabaseTask(database)
+            def dropDatabaseTask   = newDropDatabaseTask(database)
 //            def initDatabaseTask   = newInitDatabaseTask(database)
 //            def migrateTask        = newMigrateDatabaseTask(database)
 //
@@ -83,15 +83,15 @@ class MySQLDatabaseConvention {
         }
     }
 
-//    private Task newDropDatabaseTask(MySQLDatabase database) {
-//        return project.task(type: DropMySQLDatabase, description: "Drops ${ database.name } database", "drop${ database.name.capitalize() }Database") {
+    private Task newDropDatabaseTask(MySQLDatabase database) {
+        return project.task(type: DropMySQLDatabase, description: "Drops ${ database.name } database", "drop${ database.name.capitalize() }Database") {
 //            url          = database.url
 //            user         = database.username
 //            password     = database.password;
 //            databaseName = database.schema
-//        }
-//    }
-//
+        }
+    }
+
 //    private Task newInitDatabaseTask(MySQLDatabase database) {
 //        project.task(group: "Flyway", description: "Inits the Flyway schema table for ${ database.name } database", "init${ database.name.capitalize() }Database") << {
 //            ant.taskdef(

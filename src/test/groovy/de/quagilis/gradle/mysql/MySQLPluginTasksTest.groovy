@@ -44,4 +44,9 @@ class MySQLPluginTasksTest {
         assertTrue(project.tasks.createDevelopmentDatabase instanceof CreateMySQLDatabase)
     }
 
+    @Test
+    public void shouldAddDropTestDatabaseTaskToProject() {
+        assertTrue(project.tasks.dropDevelopmentDatabase instanceof DropMySQLDatabase)
+    }
+
 }
