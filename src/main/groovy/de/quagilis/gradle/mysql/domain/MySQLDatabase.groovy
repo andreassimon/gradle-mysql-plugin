@@ -19,29 +19,27 @@
  *
  */
 
-package de.quagilis.gradle.mysql
+package de.quagilis.gradle.mysql.domain
 
-import javax.sql.DataSource
-
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSource
 
 
 class MySQLDatabase {
-    def name
-    def url      = "jdbc:mysql://localhost/"
-    def schema
-    def username = "root"
-    def password = ""
+    String name
+    String url      = "jdbc:mysql://localhost/"
+    String schema
+    String username = "root"
+    String password = ""
 
     MySQLDatabase(String name) {
         this.name = name
     }
 
-//    DataSource getDataSource() {
-//        DataSource dataSource = new MysqlDataSource();
-//        dataSource.setURL(url + schema)
-//        dataSource.setUser(username)
-//        dataSource.setPassword(password)
-//        return dataSource;
-//    }
+    def getDataSource() {
+        def dataSource = new MysqlDataSource()
+        dataSource.url      = url + schema
+        dataSource.user     = username
+        dataSource.password = password
+        return dataSource
+    }
 }

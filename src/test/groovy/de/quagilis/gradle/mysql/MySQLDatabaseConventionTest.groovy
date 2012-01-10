@@ -26,6 +26,7 @@ import static org.junit.Assert.*
 
 import org.gradle.api.Project;
 import org.gradle.testfixtures.ProjectBuilder;
+import de.quagilis.gradle.mysql.domain.MySQLDatabase
 
 
 public class MySQLDatabaseConventionTest {

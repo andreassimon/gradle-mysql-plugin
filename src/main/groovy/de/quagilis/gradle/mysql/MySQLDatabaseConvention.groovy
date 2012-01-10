@@ -23,6 +23,7 @@ package de.quagilis.gradle.mysql
 
 import org.gradle.api.*
 import de.quagilis.gradle.mysql.tasks.*
+import de.quagilis.gradle.mysql.domain.*
 
 
 class MySQLDatabaseConvention {
