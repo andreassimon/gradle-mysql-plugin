@@ -24,73 +24,47 @@ package de.quagilis.gradle.mysql.tasks
 import java.sql.*
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.DefaultTask
+import de.quagilis.gradle.mysql.domain.MySQLDatabase
 
 
 abstract class MySQLTask extends DefaultTask {
-//    def driver        = "com.mysql.jdbc.Driver"
-//    def url           = "jdbc:mysql://localhost/"
-//    def user          = "root"
-//    def password      = "password"
-//    def databaseName
-//
-//
+    MySQLDatabase database = null
+
 //    public MySQLTask() {
 //        group = "MySQL"
 //        addBuildscriptDependenciesToGroovyClassloader()
 //    }
-//
-//    private void addBuildscriptDependenciesToGroovyClassloader() {
-//        URLClassLoader loader = GroovyObject.class.classLoader
-//        project.configurations.gradleMysqlPlugin.each {File file ->
-//            loader.addURL(file.toURL())
-//        }
-//    }
-//
-//    @TaskAction
-//    public void createTestDatabase() {
-//        def stmt = null;
-//        def conn = null
+
+    @TaskAction
+    public void executeStatement() {
+        def connection = null
+        def statement = null;
 //        try {
-//            registerJdbcDriver()
-//            conn = openConnection()
-//            executeStatement(conn, databaseName)
+            def dataSource = database.dataSource
+            connection = dataSource.getConnection(database.username, database.password)
+            statement = connection.createStatement()
+            statement.executeUpdate(sql(database.schema))
+            println("Database created")
 //        } catch(SQLException e) {
 //            logger.warn "\t" + e.getMessage()
 //        } catch(Exception e) {
 //            logger.error e.toString()
 //        } finally {
-//            closeResource(stmt)
-//            closeResource(conn)
+//            closeResource(statement)
+//            closeResource(connection)
 //        }
-//    }
-//
-//    private void registerJdbcDriver() {
-//        Class.forName(driver);
-//    }
-//
-//    private Connection openConnection() {
-//        logger.debug "Connecting to database...";
-//        conn = DriverManager.getConnection(url, user, password);
-//    }
-//
-//    private void executeStatement(connection, database) {
-//        logger.debug "Creating database...";
-//        stmt = conn.createStatement();
-//        command = sql(database)
-//        logger.info "Execute '${ command }'"
-//        stmt.executeUpdate(command);
-//        logger.debug "Database created successfully...";
-//    }
-//
-//    def abstract sql(databasename)
-//
-//    private void closeResource(resource) {
-//        try{
-//            if(resource != null) {
-//              resource.close()
-//            }
-//        } catch(SQLException se) {
-//            logger.error se
-//        }
-//    }
+    }
+
+    abstract String sql(databasename)
+
+    private void closeResource(resource) {
+        try{
+            if(resource != null) {
+                resource.close()
+            }
+        } catch(SQLException se) {
+            logger.error se
+        }
+    }
+
 }

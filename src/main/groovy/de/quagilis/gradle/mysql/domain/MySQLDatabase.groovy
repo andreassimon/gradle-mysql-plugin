@@ -37,7 +37,7 @@ class MySQLDatabase {
 
     def getDataSource() {
         def dataSource = new MysqlDataSource()
-        dataSource.url      = url + schema
+        dataSource.url      = url // + schema
         dataSource.user     = username
         dataSource.password = password
         return dataSource

@@ -42,7 +42,7 @@ public class MySQLDatabaseTest {
     public void shouldConstructDataSource() {
         def mocker = new MockFor(MysqlDataSource.class);
         mocker.demand.with {
-            setUrl()      { urlParam      -> assertEquals(database.url + database.schema, urlParam) }
+            setUrl()      { urlParam      -> assertEquals(database.url/* + database.schema*/, urlParam) }
             setUser()     { userParam     -> assertEquals(database.username, userParam) }
             setPassword() { passwordParam -> assertEquals(database.password, passwordParam) }
         }

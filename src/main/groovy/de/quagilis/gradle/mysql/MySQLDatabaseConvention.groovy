@@ -73,12 +73,9 @@ class MySQLDatabaseConvention {
         }
     }
 
-    private Task newCreateDatabaseTask(MySQLDatabase database) {
-        return project.task(type: CreateMySQLDatabase, description: "Creates ${ database.name } database", "create${ database.name.capitalize() }Database") {
-//            url          = database.url
-//            user         = database.username
-//            password     = database.password;
-//            databaseName = database.schema
+    private Task newCreateDatabaseTask(MySQLDatabase databaseParam) {
+        return project.task(type: CreateMySQLDatabase, description: "Creates ${ databaseParam.name } database", "create${ databaseParam.name.capitalize() }Database") {
+            database = databaseParam
         }
     }
 

@@ -23,7 +23,8 @@ package de.quagilis.gradle.mysql.tasks
 
 
 class CreateMySQLDatabase extends MySQLTask {
-//    def sql(databasename) {
-//        "CREATE DATABASE ${databasename}"
-//    }
+    @Override
+    String sql(databasename) {
+        "CREATE DATABASE ${databasename}"
+    }
 }
