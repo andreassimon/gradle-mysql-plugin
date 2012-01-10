@@ -22,18 +22,18 @@
 package de.quagilis.gradle.mysql.tasks
 
 import org.junit.Test
-import org.gradle.api.Task;
+import org.gradle.api.Task
 
 
-public class CreateMySQLDatabaseTest extends MockDatabaseTest {
+public class DropMySQLDatabaseTest extends MockDatabaseTest {
 
     @Test
-    public void shouldExecuteCreateDatabaseOnDataSource() {
-        assertStatementIsExecuted("CREATE DATABASE test_database") {
-            Task createDatabaseTask = project.task(type: CreateMySQLDatabase, "createDatabaseTask") {
+    public void shouldExecuteDropDatabaseOnDataSource() {
+        assertStatementIsExecuted("DROP DATABASE test_database") {
+            Task dropDatabaseTask = project.task(type: DropMySQLDatabase, "dropDatabaseTask") {
                 database = mockDatabase()
             }
-            createDatabaseTask.execute()
+            dropDatabaseTask.execute()
         }
     }
 

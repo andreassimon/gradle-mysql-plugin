@@ -52,7 +52,7 @@ class MockDatabaseTest {
         return databaseMocker.proxyInstance()
     }
 
-    void assertStatmentIsExecuted(String expectedStatement, Closure closure) {
+    void assertStatementIsExecuted(String expectedStatement, Closure closure) {
         statementMocker.demand.executeUpdate() { command ->  assertEquals(expectedStatement, command) }
         def mockStatement = statementMocker.proxyInstance()
 

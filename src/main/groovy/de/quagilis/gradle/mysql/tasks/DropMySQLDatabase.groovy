@@ -23,7 +23,7 @@ package de.quagilis.gradle.mysql.tasks
 
 
 class DropMySQLDatabase extends MySQLTask {
-//    def sql(databasename) {
-//        "DROP DATABASE ${databasename}"
-//    }
+    String sql(databasename) {
+        "DROP DATABASE ${databasename}"
+    }
 }
