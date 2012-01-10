@@ -19,23 +19,30 @@
  *
  */
 
-package de.quagilis.gradle.mysql;
+package de.quagilis.gradle.mysql.tasks
 
-import org.gradle.api.*
+import de.quagilis.gradle.mysql.domain.MySQLDatabase
 
 
-class MySQLPlugin implements Plugin<Project> {
+class FlywayInit extends FlywayTask {
+    MySQLDatabase database
 
-    void apply(Project project) {
-        project.convention.plugins.mysql =
-            new MySQLDatabaseConvention(project)
+    FlywayInit() {
+        this << taskAction
+    }
 
-        project.configurations.add("gradleMysqlPlugin")
+    def taskAction = {
+        ant.taskdef(
+            name: 'flywayInit',
+            classname: 'com.googlecode.flyway.ant.InitTask',
+            classpath: project.configurations.gradleMysqlPlugin.asPath)
 
-        project.dependencies {
-            gradleMysqlPlugin "mysql:mysql-connector-java:5.0.5"
-            gradleMysqlPlugin "com.googlecode.flyway:flyway-ant:1.5"
-        }
+        ant.flywayInit(
+            driver: 'com.mysql.jdbc.Driver',
+            url: database.url,
+            user: database.username,
+            password: database.password,
+            schemas: database.schema)
     }
 
 }

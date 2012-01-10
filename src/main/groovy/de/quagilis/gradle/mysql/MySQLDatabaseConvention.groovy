@@ -85,19 +85,11 @@ class MySQLDatabaseConvention {
         }
     }
 
-    private Task newInitDatabaseTask(MySQLDatabase database) {
-        project.task(group: "Flyway", description: "Inits the Flyway schema table for ${ database.name } database", "init${ database.name.capitalize() }Database") << {
-//            ant.taskdef(
-//                    name: 'flywayInit',
-//                    classname: 'com.googlecode.flyway.ant.InitTask',
-//                    classpath: project.configurations.gradleMysqlPlugin.asPath)
-//
-//            ant.flywayInit(
-//                    driver: 'com.mysql.jdbc.Driver',
-//                    url: database.url,
-//                    user: database.username,
-//                    password: database.password,
-//                    schemas: database.schema)
+    private Task newInitDatabaseTask(MySQLDatabase databaseParam) {
+        project.task(type: FlywayInit, "init${ databaseParam.name.capitalize() }Database") {
+            description = "Inits the Flyway schema table for ${ databaseParam.name } database"
+
+            database = databaseParam
         }
     }
 
