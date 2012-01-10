@@ -40,9 +40,9 @@ class MySQLPluginGlobalTasksTest {
         project.apply plugin: 'mysql'
         project.migrationsDir = project.file("migrations")
         project.databases {
-            test
-            development
-            production
+            test        { schema = "test"}
+            development { schema = "development"}
+            production  { schema = "production"}
         }
 
         allCreateTasks =

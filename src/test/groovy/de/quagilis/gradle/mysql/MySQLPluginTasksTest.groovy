@@ -38,7 +38,7 @@ class MySQLPluginTasksTest {
     public void applyPlugin() {
         project.apply plugin: 'mysql'
         project.migrationsDir = project.file("migrations")
-        project.databases { development }
+        project.databases { development { schema = "schema" } }
     }
 
     @Test

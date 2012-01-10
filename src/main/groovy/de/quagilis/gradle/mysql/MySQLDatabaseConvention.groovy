@@ -46,6 +46,8 @@ class MySQLDatabaseConvention {
         def dropAllDependencies         = []
 
         databases.each { database ->
+            assert database.schema, "You must set the 'schema' property for database '${ database.name }'!";
+
             def createDatabaseTask  = newCreateDatabaseTask(database)
             def dropDatabaseTask    = newDropDatabaseTask(database)
             def initDatabaseTask    = newInitDatabaseTask(database)

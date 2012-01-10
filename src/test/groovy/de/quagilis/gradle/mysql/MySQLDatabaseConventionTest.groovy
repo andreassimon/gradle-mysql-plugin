@@ -35,14 +35,13 @@ public class MySQLDatabaseConventionTest {
     @Before
     public void applyMySqlPlugin() {
         project.apply plugin: 'mysql'
-
         project.migrationsDir = project.file("migrations")
     }
 
     @Test
     public void shouldCreateADatabaseDomainObjectForEachElementInTheDatabasesClosure() {
         project.databases {
-            development
+            development { schema = "schema" }
         }
 
         assertTrue(project.databases.development instanceof MySQLDatabase)
@@ -68,11 +67,20 @@ public class MySQLDatabaseConventionTest {
 
     @Test(expected=AssertionError)
     public void shouldRequireMigrationsDirToBeSetWhenConfiguringDatabases() {
-        project.migrationsDir = null;
+        project.migrationsDir = null // !!!
 
         project.databases {
-            development
+            development { schema = "schema" }
         }
     }
+
+    @Test(expected=AssertionError)
+    public void shouldRequireSchemaNameOnEveryConfiguredDatabase() {
+         project.databases {
+             development {
+                 schema = null // !!!
+             }
+         }
+     }
 
 }
