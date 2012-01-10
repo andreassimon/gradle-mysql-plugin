@@ -22,63 +22,19 @@
 package de.quagilis.gradle.mysql.tasks
 
 import org.junit.Test
-import static org.junit.Assert.*
-import groovy.mock.interceptor.MockFor
-import java.sql.Connection
-import java.sql.Statement
-import de.quagilis.gradle.mysql.domain.MySQLDatabase
-import javax.sql.DataSource
-import org.gradle.api.Project
-import org.gradle.testfixtures.ProjectBuilder
-import org.junit.Before
 import org.gradle.api.Task;
 
 
-public class CreateMySQLDatabaseTest {
-    Project project = ProjectBuilder.builder().build()
-
-    @Before
-    public void applyMySQLPlugin() {
-        project.apply plugin: 'mysql'
-    }
-
+public class CreateMySQLDatabaseTest extends MockDatabaseTest {
 
     @Test
     public void shouldExecuteCreateDatabaseOnDataSource() {
-        def databaseMocker = new MockFor(MySQLDatabase.class)
-        def dataSourceMocker = new MockFor(DataSource.class)
-        def connectionMocker = new MockFor(Connection.class)
-        def statementMocker = new MockFor(Statement.class)
-
-        statementMocker.demand.executeUpdate(1)    { command -> assertEquals("CREATE DATABASE test_database", command) }
-        Statement statement = statementMocker.proxyInstance()
-
-        connectionMocker.demand.createStatement(1) { statement }
-        def connection = connectionMocker.proxyInstance()
-        dataSourceMocker.demand.getConnection(1)   { username, password ->
-            connection
-        }
-        def dataSource = dataSourceMocker.proxyInstance()
-        databaseMocker.demand.with {
-            getDataSource(1) {
-                dataSource
+        assertStatmentIsExecuted("CREATE DATABASE test_database") {
+            Task createDatabaseTask = project.task(type: CreateMySQLDatabase, "createDatabaseTask") {
+                database = mockDatabase()
             }
-            getUsername() { "username" }
-            getPassword() { "password" }
-            getSchema()   { "test_database" }
+            createDatabaseTask.execute()
         }
-
-        def testDatabase = databaseMocker.proxyInstance()
-
-        Task createDatabaseTask = project.task(type: CreateMySQLDatabase, "createDatabaseTask") {
-            database = testDatabase
-        }
-        createDatabaseTask.execute()
-
-        databaseMocker.verify(testDatabase)
-        dataSourceMocker.verify(dataSource)
-        connectionMocker.verify(connection)
-        statementMocker.verify(statement)
     }
 
 }
