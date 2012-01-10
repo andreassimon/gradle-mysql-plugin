@@ -1,5 +1,6 @@
 apply plugin: 'groovy'
 apply plugin: 'maven'
+apply plugin: 'idea'
 
 group   = 'andreassimon'
 // Version 0.1.1 mit Tests
@@ -16,5 +17,4 @@ dependencies {
     compile group: "mysql", name: "mysql-connector-java", version: "5.0.5"
 
     groovy 'org.codehaus.groovy:groovy:1.8.0'
-
 }
