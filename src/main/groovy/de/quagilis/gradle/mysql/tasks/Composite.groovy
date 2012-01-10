@@ -32,14 +32,14 @@ class Composite extends DefaultTask {
         group = "Utility"
     }
 
-//    @TaskAction
-//    public executeSubtasks() {
-//        if (subtasks.isEmpty()) {
-//          logger.warn "Composite task " + path + " has no subtasks"
-//        }
-//        subtasks.each { subtask ->
-//            println "\t" + subtask.path
-//            subtask.execute()
-//        }
-//    }
+    @TaskAction
+    public executeSubtasks() {
+        if (subtasks.isEmpty()) {
+          logger.warn "Composite task ${ path } has no subtasks"
+        }
+        subtasks.each { subtask ->
+            println "\t" + subtask.path
+            subtask.execute()
+        }
+    }
 }
