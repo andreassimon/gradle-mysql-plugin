@@ -93,23 +93,12 @@ class MySQLDatabaseConvention {
         }
     }
 
-    private Task newMigrateDatabaseTask(MySQLDatabase database) {
-        Task migrateTask = project.task(group: "Flyway", description: "Migrates the schema of the ${ database.name } database", "migrate${ database.name.capitalize() }Database")  << {
-//            def antClasspath = project.configurations.gradleMysqlPlugin + project.files(_migrationsDir)
-//            ant.taskdef(
-//                    name: 'flywayMigrate',
-//                    classname: 'com.googlecode.flyway.ant.MigrateTask',
-//                    classpath: antClasspath.asPath)
-//
-//            ant.flywayMigrate(
-//                    driver: 'com.mysql.jdbc.Driver',
-//                    url: "jdbc:mysql://localhost/${ database.schema }",
-//                    user: database.username,
-//                    password: database.password,
-//                    baseDir: '',
-//                    sqlMigrationPrefix: '')
+    private Task newMigrateDatabaseTask(MySQLDatabase databaseParam) {
+        project.task(type: FlywayMigrate, "migrate${ databaseParam.name.capitalize() }Database") {
+            description = "Migrates the schema of the ${ databaseParam.name } database"
+
+            database = databaseParam
         }
-        return migrateTask;
     }
 
 }
