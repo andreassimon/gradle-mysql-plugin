@@ -55,16 +55,25 @@ class MySQLDatabaseConvention {
             migrateAllDatabasesSubtasks << migrateDatabaseTask
             dropAllDependencies         << dropDatabaseTask
 
-            project.task(type: Composite, group: "MySQL", description: "Resets the ${ database.name } database", "reset${ database.name.capitalize() }Database") {
+            project.task(type: Composite, "reset${ database.name.capitalize() }Database") {
+                group       = "MySQL"
+                description = "Resets the ${ database.name } database"
+
                 subtasks = [dropDatabaseTask, createDatabaseTask, initDatabaseTask, migrateDatabaseTask]
             }
         }
 
-        project.task(type: Composite, group: "Developer Machine Setup", description: "Sets up the necessary databases on a new development machine", "setupAllDatabases") {
+        project.task(type: Composite, "setupAllDatabases") {
+            group       = "Developer Machine Setup"
+            description = "Sets up the necessary databases on a new development machine"
+
             subtasks = setupAllDatabasesSubtasks
         }
 
-        project.task(type: Composite, group: "Flyway", description: "Migrates all databases", "migrateAllDatabases") {
+        project.task(type: Composite, "migrateAllDatabases") {
+            group       = "Flyway"
+            description = "Migrates all databases"
+
             subtasks = migrateAllDatabasesSubtasks
         }
 
@@ -74,13 +83,17 @@ class MySQLDatabaseConvention {
     }
 
     private Task newCreateDatabaseTask(MySQLDatabase databaseParam) {
-        return project.task(type: CreateMySQLDatabase, description: "Creates ${ databaseParam.name } database", "create${ databaseParam.name.capitalize() }Database") {
+        return project.task(type: CreateMySQLDatabase, "create${ databaseParam.name.capitalize() }Database") {
+            description = "Creates ${ databaseParam.name } database"
+
             database = databaseParam
         }
     }
 
     private Task newDropDatabaseTask(MySQLDatabase databaseParam) {
-        return project.task(type: DropMySQLDatabase, description: "Drops ${ databaseParam.name } database", "drop${ databaseParam.name.capitalize() }Database") {
+        return project.task(type: DropMySQLDatabase, "drop${ databaseParam.name.capitalize() }Database") {
+            description = "Drops ${ databaseParam.name } database"
+
             database = databaseParam
         }
     }
