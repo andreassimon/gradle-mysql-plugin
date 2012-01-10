@@ -28,6 +28,11 @@ import org.gradle.api.Task
 public class DropMySQLDatabaseTest extends MockDatabaseTest {
 
     @Test
+    public void shouldBelongToGroupMySQL() {
+        assertBelongsToGroupMySQL(project.task(type: DropMySQLDatabase, "dropDatabaseTask"))
+    }
+
+    @Test
     public void shouldExecuteDropDatabaseOnDataSource() {
         assertStatementIsExecuted("DROP DATABASE test_database") {
             Task dropDatabaseTask = project.task(type: DropMySQLDatabase, "dropDatabaseTask") {

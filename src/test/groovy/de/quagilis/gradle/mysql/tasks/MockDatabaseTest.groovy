@@ -26,7 +26,7 @@ import static org.junit.Assert.*
 
 import groovy.mock.interceptor.MockFor
 
-import org.gradle.api.Project
+import org.gradle.api.*
 import org.gradle.testfixtures.ProjectBuilder
 
 import java.sql.*
@@ -76,6 +76,10 @@ class MockDatabaseTest {
         closure.call()
 
         statementMocker.verify(mockStatement)
+    }
+
+    void assertBelongsToGroupMySQL(Task task) {
+        assertEquals("MySQL", task.group)
     }
 
 }

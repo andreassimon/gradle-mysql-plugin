@@ -30,10 +30,9 @@ import de.quagilis.gradle.mysql.domain.MySQLDatabase
 abstract class MySQLTask extends DefaultTask {
     MySQLDatabase database = null
 
-//    public MySQLTask() {
-//        group = "MySQL"
-//        addBuildscriptDependenciesToGroovyClassloader()
-//    }
+    public MySQLTask() {
+        group = "MySQL"
+    }
 
     @TaskAction
     public void executeStatement() {
