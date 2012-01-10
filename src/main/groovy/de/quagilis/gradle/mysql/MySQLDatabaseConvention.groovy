@@ -79,12 +79,9 @@ class MySQLDatabaseConvention {
         }
     }
 
-    private Task newDropDatabaseTask(MySQLDatabase database) {
-        return project.task(type: DropMySQLDatabase, description: "Drops ${ database.name } database", "drop${ database.name.capitalize() }Database") {
-//            url          = database.url
-//            user         = database.username
-//            password     = database.password;
-//            databaseName = database.schema
+    private Task newDropDatabaseTask(MySQLDatabase databaseParam) {
+        return project.task(type: DropMySQLDatabase, description: "Drops ${ databaseParam.name } database", "drop${ databaseParam.name.capitalize() }Database") {
+            database = databaseParam
         }
     }
 
