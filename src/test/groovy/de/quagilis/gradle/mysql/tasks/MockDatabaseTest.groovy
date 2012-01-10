@@ -53,10 +53,16 @@ class MockDatabaseTest {
     }
 
     void assertStatementIsExecuted(String expectedStatement, Closure closure) {
-        statementMocker.demand.executeUpdate() { command ->  assertEquals(expectedStatement, command) }
+        statementMocker.demand.with {
+            executeUpdate() { command -> assertEquals(expectedStatement, command) }
+            close() { }
+        }
         def mockStatement = statementMocker.proxyInstance()
 
-        connectionMocker.demand.createStatement() { mockStatement }
+        connectionMocker.demand.with {
+            createStatement() { mockStatement }
+            close() { }
+        }
         dataSourceMocker.demand.getConnection() { username, password -> connectionMocker.proxyInstance() }
         databaseMocker.demand.with {
             getDataSource() {

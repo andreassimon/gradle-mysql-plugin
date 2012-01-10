@@ -39,31 +39,36 @@ abstract class MySQLTask extends DefaultTask {
     public void executeStatement() {
         def connection = null
         def statement = null;
-//        try {
+        try {
             def dataSource = database.dataSource
             connection = dataSource.getConnection(database.username, database.password)
             statement = connection.createStatement()
             statement.executeUpdate(sql(database.schema))
-            println("Database created")
-//        } catch(SQLException e) {
-//            logger.warn "\t" + e.getMessage()
-//        } catch(Exception e) {
-//            logger.error e.toString()
-//        } finally {
-//            closeResource(statement)
-//            closeResource(connection)
-//        }
+        } catch(SQLException e) {
+            logger.warn "\t" + e.getMessage()
+        } catch(Exception e) {
+            logStacktrace(e)
+        } finally {
+            closeResource(statement)
+            closeResource(connection)
+        }
     }
 
     abstract String sql(databasename)
+
+    private def logStacktrace(Exception exception) {
+        exception.stackTrace.each { stackElement ->
+            logger.error stackElement.toString()
+        }
+    }
 
     private void closeResource(resource) {
         try{
             if(resource != null) {
                 resource.close()
             }
-        } catch(SQLException se) {
-            logger.error se
+        } catch(SQLException e) {
+            logStacktrace(e)
         }
     }
 
