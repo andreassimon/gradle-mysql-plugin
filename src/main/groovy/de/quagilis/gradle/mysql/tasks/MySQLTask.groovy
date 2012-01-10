@@ -46,8 +46,6 @@ abstract class MySQLTask extends DefaultTask {
             statement.executeUpdate(sql(database.schema))
         } catch(SQLException e) {
             logger.warn "\t" + e.getMessage()
-        } catch(Exception e) {
-            logStacktrace(e)
         } finally {
             closeResource(statement)
             closeResource(connection)
@@ -56,11 +54,6 @@ abstract class MySQLTask extends DefaultTask {
 
     abstract String sql(databasename)
 
-    private def logStacktrace(Exception exception) {
-        exception.stackTrace.each { stackElement ->
-            logger.error stackElement.toString()
-        }
-    }
 
     private void closeResource(resource) {
         try{
@@ -68,7 +61,7 @@ abstract class MySQLTask extends DefaultTask {
                 resource.close()
             }
         } catch(SQLException e) {
-            logStacktrace(e)
+            logger.error("", e)
         }
     }
 
