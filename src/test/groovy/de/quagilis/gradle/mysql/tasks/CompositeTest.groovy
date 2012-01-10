@@ -21,25 +21,21 @@
 
 package de.quagilis.gradle.mysql.tasks
 
-import org.gradle.api.DefaultTask
-import org.gradle.api.tasks.TaskAction
+import org.junit.Test
+import static org.junit.Assert.*
+
+import org.gradle.api.Project
+import org.gradle.testfixtures.ProjectBuilder
 
 
-class Composite extends DefaultTask {
-    def subtasks = []
+public class CompositeTest {
+    static Project project = ProjectBuilder.builder().build()
 
-    public Composite() {
-        group = "Utility"
+    @Test
+    public void shouldBelongToGroup_Utility() {
+        project.apply plugin: 'mysql'
+        def task = project.task(type: Composite, "compositeTask")
+
+        assertEquals("Utility", task.group)
     }
-
-//    @TaskAction
-//    public executeSubtasks() {
-//        if (subtasks.isEmpty()) {
-//          logger.warn "Composite task " + path + " has no subtasks"
-//        }
-//        subtasks.each { subtask ->
-//            println "\t" + subtask.path
-//            subtask.execute()
-//        }
-//    }
 }
