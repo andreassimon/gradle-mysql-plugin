@@ -49,6 +49,10 @@ class MySQLDatabase {
     }
 
     def createDatabase(logger) {
+        executeMySqlAdminCommand("CREATE DATABASE ${ schema }" , logger)
+    }
+
+    private def executeMySqlAdminCommand(GString sqlCommand, logger) {
         def dataSource = new MysqlDataSource()
         dataSource.url      = url
         dataSource.user     = username
@@ -57,25 +61,14 @@ class MySQLDatabase {
         def connection = dataSource.getConnection()
 
         def statement = connection.createStatement()
-        statement.execute("CREATE DATABASE ${ schema }")
+        statement.execute(sqlCommand)
 
         closeResource(statement, logger)
         closeResource(connection, logger)
     }
 
     def dropDatabase(logger) {
-        def dataSource = new MysqlDataSource()
-        dataSource.url      = url
-        dataSource.user     = username
-        dataSource.password = password
-
-        def connection = dataSource.getConnection()
-
-        def statement = connection.createStatement()
-        statement.execute("DROP DATABASE ${ schema }")
-
-        closeResource(statement, logger)
-        closeResource(connection, logger)
+        executeMySqlAdminCommand("DROP DATABASE ${ schema }" , logger)
     }
 
 }
