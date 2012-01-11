@@ -19,7 +19,7 @@
  *
  */
 
-package de.quagilis.gradle.mysql.tasks
+package de.quagilis.gradle.mysql.testutils
 
 import org.junit.Before
 import static org.junit.Assert.*

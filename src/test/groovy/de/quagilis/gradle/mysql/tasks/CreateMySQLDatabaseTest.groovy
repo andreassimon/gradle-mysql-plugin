@@ -23,6 +23,7 @@ package de.quagilis.gradle.mysql.tasks
 
 import org.junit.Test
 import org.gradle.api.Task;
+import de.quagilis.gradle.mysql.testutils.MockDatabaseTest;
 
 
 public class CreateMySQLDatabaseTest extends MockDatabaseTest {

@@ -27,7 +27,7 @@ import static org.junit.Assert.*
 import groovy.mock.interceptor.MockFor
 import org.gradle.api.logging.Logger
 
-import de.quagilis.gradle.mysql.tasks.MockDatabaseTest
+import de.quagilis.gradle.mysql.testutils.MockDatabaseTest
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource
 
 
