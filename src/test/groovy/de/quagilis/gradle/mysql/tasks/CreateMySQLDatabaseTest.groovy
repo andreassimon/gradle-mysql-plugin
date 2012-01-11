@@ -36,7 +36,7 @@ public class CreateMySQLDatabaseTest extends MockDatabaseTest {
     public void shouldExecuteCreateDatabaseOnDataSource() {
         assertStatementIsExecuted("CREATE DATABASE test_database") {
             Task createDatabaseTask = project.task(type: CreateMySQLDatabase, "createDatabaseTask") {
-                database = mockDatabase()
+                database = mySQLDatabase
             }
             createDatabaseTask.execute()
         }

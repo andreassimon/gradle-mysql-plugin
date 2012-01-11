@@ -30,8 +30,8 @@ import org.gradle.api.*
 import org.gradle.testfixtures.ProjectBuilder
 
 import java.sql.*
-import javax.sql.*
 
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSource
 import de.quagilis.gradle.mysql.domain.MySQLDatabase
 
 
@@ -39,17 +39,21 @@ class MockDatabaseTest {
     Project project = ProjectBuilder.builder().build()
 
     def databaseMocker = new MockFor(MySQLDatabase.class)
-    def dataSourceMocker = new MockFor(DataSource.class)
+    def mySQLDataSourceMocker = new MockFor(MysqlDataSource.class)
     def connectionMocker = new MockFor(Connection.class)
     def statementMocker = new MockFor(Statement.class)
+
+    def mySQLDatabase
 
     @Before
     public void applyMySQLPlugin() {
         project.apply plugin: 'mysql'
     }
 
-    def mockDatabase() {
-        return databaseMocker.proxyInstance()
+    @Before
+    public void setupMySQLDatabaseDomainObject() {
+        mySQLDatabase = new MySQLDatabase("test")
+        mySQLDatabase.schema = "test_database"
     }
 
     void assertStatementIsExecuted(String expectedStatement, Closure closure) {
@@ -63,17 +67,17 @@ class MockDatabaseTest {
             createStatement() { mockStatement }
             close() { }
         }
-        dataSourceMocker.demand.getConnection() { username, password -> connectionMocker.proxyInstance() }
-        databaseMocker.demand.with {
-            getDataSource() {
-                dataSourceMocker.proxyInstance()
-            }
-            getUsername() { "username" }
-            getPassword() { "password" }
-            getSchema()   { "test_database" }
+
+        mySQLDataSourceMocker.demand.with {
+            setUrl() { url -> assertEquals(mySQLDatabase.url, url) }
+            setUser() { user -> assertEquals(mySQLDatabase.username, user) }
+            setPassword() { password -> assertEquals(mySQLDatabase.password, password) }
+            getConnection() { username, password -> connectionMocker.proxyInstance() }
         }
 
-        closure.call()
+        mySQLDataSourceMocker.use {
+            closure.call()
+        }
 
         statementMocker.verify(mockStatement)
     }
