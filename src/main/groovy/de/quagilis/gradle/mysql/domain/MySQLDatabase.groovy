@@ -27,6 +27,8 @@ import com.mysql.jdbc.jdbc2.optional.MysqlDataSource
 
 
 class MySQLDatabase {
+    def logger
+
     String name
     private String url = "jdbc:mysql://localhost/"
     String schema
@@ -48,11 +50,13 @@ class MySQLDatabase {
         return dataSource
     }
 
-    def createDatabase(logger) {
-        executeMySqlAdminCommand("CREATE DATABASE ${ schema }" , logger)
+    def createDatabase() {
+        executeMySqlAdminCommand("CREATE DATABASE ${ schema }")
     }
 
-    private def executeMySqlAdminCommand(GString sqlCommand, logger) {
+    private def executeMySqlAdminCommand(GString sqlCommand) {
+        assert logger, "You must set the property 'logger' on this MySQLDatabase object!"
+
         def dataSource = new MysqlDataSource()
         dataSource.url      = url
         dataSource.user     = username
@@ -67,8 +71,8 @@ class MySQLDatabase {
         closeResource(connection, logger)
     }
 
-    def dropDatabase(logger) {
-        executeMySqlAdminCommand("DROP DATABASE ${ schema }" , logger)
+    def dropDatabase() {
+        executeMySqlAdminCommand("DROP DATABASE ${ schema }")
     }
 
 }

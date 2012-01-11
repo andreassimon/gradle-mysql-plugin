@@ -25,16 +25,25 @@ import org.junit.*
 import static org.junit.Assert.*
 
 import groovy.mock.interceptor.MockFor
+import org.gradle.api.logging.Logger
 
 import java.sql.*
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource
 
 
 public class MySQLDatabaseTest {
+    def loggerMocker = new MockFor(Logger.class)
+
     def connectionMocker = new MockFor(Connection.class)
     def statementMocker = new MockFor(Statement.class)
 
     MySQLDatabase database
+
+    @Before
+    public void setTaskLogger() {
+        loggerMocker.demand.asBoolean() { true }
+        database.logger = loggerMocker.proxyInstance()
+    }
 
     @Before
     public void initDatabaseObject() {

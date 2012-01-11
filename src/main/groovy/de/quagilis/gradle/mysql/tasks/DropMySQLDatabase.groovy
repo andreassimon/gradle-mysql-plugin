@@ -28,7 +28,7 @@ class DropMySQLDatabase extends MySQLTask {
 
     @TaskAction
     public void createDatabase() {
-        database.dropDatabase(logger)
+        database.dropDatabase()
     }
 
 }

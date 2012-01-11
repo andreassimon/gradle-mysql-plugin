@@ -34,4 +34,9 @@ abstract class MySQLTask extends DefaultTask {
         group = "MySQL"
     }
 
+    void setDatabase(MySQLDatabase database) {
+        database.logger = logger
+        this.database = database
+    }
+
 }

@@ -28,7 +28,7 @@ class CreateMySQLDatabase extends MySQLTask {
 
     @TaskAction
     public void createDatabase() {
-        database.createDatabase(logger)
+        database.createDatabase()
     }
 
 }
