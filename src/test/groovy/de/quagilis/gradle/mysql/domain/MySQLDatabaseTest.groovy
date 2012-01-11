@@ -27,85 +27,51 @@ import static org.junit.Assert.*
 import groovy.mock.interceptor.MockFor
 import org.gradle.api.logging.Logger
 
-import java.sql.*
+import de.quagilis.gradle.mysql.tasks.MockDatabaseTest
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource
 
 
-public class MySQLDatabaseTest {
+public class MySQLDatabaseTest extends MockDatabaseTest{
     def loggerMocker = new MockFor(Logger.class)
-
-    def connectionMocker = new MockFor(Connection.class)
-    def statementMocker = new MockFor(Statement.class)
-
-    MySQLDatabase database
 
     @Before
     public void setTaskLogger() {
         loggerMocker.demand.asBoolean() { true }
-        database.logger = loggerMocker.proxyInstance()
+        mySQLDatabase.logger = loggerMocker.proxyInstance()
     }
 
     @Before
     public void initDatabaseObject() {
-        database = new MySQLDatabase("database")
-        database.schema = "database"
+        mySQLDatabase = new MySQLDatabase("database")
+        mySQLDatabase.schema = "database"
     }
 
     @Test
     public void shouldConstructDataSource() {
         def mocker = new MockFor(MysqlDataSource.class);
         mocker.demand.with {
-            setUrl()      { urlParam      -> assertEquals(database.url + database.schema, urlParam) }
-            setUser()     { userParam     -> assertEquals(database.username, userParam) }
-            setPassword() { passwordParam -> assertEquals(database.password, passwordParam) }
+            setUrl()      { urlParam      -> assertEquals(mySQLDatabase.url + mySQLDatabase.schema, urlParam) }
+            setUser()     { userParam     -> assertEquals(mySQLDatabase.username, userParam) }
+            setPassword() { passwordParam -> assertEquals(mySQLDatabase.password, passwordParam) }
         }
 
         mocker.use {
-            database.getDataSource()
+            mySQLDatabase.getDataSource()
         }
     }
 
     @Test
     public void shouldExecuteCreateDatabaseOnDataSource() {
-        assertSqlCommandIsExecutedOnDatabaseUrl("CREATE DATABASE ${ database.schema }", database.url) {
-            database.createDatabase()
+        assertSqlCommandIsExecutedOnDatabaseUrl("CREATE DATABASE ${ mySQLDatabase.schema }", mySQLDatabase.url) {
+            mySQLDatabase.createDatabase()
         }
     }
 
     @Test
     public void shouldExecuteDropDatabaseOnDataSource() {
-        assertSqlCommandIsExecutedOnDatabaseUrl("DROP DATABASE ${ database.schema }", database.url) {
-            database.dropDatabase()
+        assertSqlCommandIsExecutedOnDatabaseUrl("DROP DATABASE ${ mySQLDatabase.schema }", mySQLDatabase.url) {
+            mySQLDatabase.dropDatabase()
         }
-    }
-
-    private def assertSqlCommandIsExecutedOnDatabaseUrl(GString expectedSqlCommand, String expectedDatabaseUrl, Closure closure) {
-        statementMocker.demand.with {
-            execute() { command -> assertEquals(expectedSqlCommand, command) }
-            close() { }
-        }
-        def mockStatement = statementMocker.proxyInstance()
-
-        connectionMocker.demand.with {
-            createStatement() { mockStatement }
-            close() { }
-        }
-        def mockConnection = connectionMocker.proxyInstance()
-
-        def myslDataSourceMocker = new MockFor(MysqlDataSource.class);
-        myslDataSourceMocker.demand.with {
-            setUrl() { urlParam -> assertEquals(expectedDatabaseUrl, urlParam) }
-            setUser() { userParam -> assertEquals(database.username, userParam) }
-            setPassword() { passwordParam -> assertEquals(database.password, passwordParam) }
-            getConnection() { mockConnection }
-        }
-
-        myslDataSourceMocker.use {
-            closure.call()
-        }
-
-        connectionMocker.verify(mockConnection)
-        statementMocker.verify(mockStatement)
     }
 
 }

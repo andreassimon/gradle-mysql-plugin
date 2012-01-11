@@ -43,7 +43,7 @@ class MockDatabaseTest {
     def connectionMocker = new MockFor(Connection.class)
     def statementMocker = new MockFor(Statement.class)
 
-    def mySQLDatabase
+    MySQLDatabase mySQLDatabase
 
     @Before
     public void applyMySQLPlugin() {
@@ -57,8 +57,12 @@ class MockDatabaseTest {
     }
 
     void assertStatementIsExecuted(String expectedStatement, Closure closure) {
+        assertSqlCommandIsExecutedOnDatabaseUrl(expectedStatement, mySQLDatabase.url, closure)
+    }
+
+    def assertSqlCommandIsExecutedOnDatabaseUrl(String expectedSqlCommand, String expectedDatabaseUrl, Closure closure) {
         statementMocker.demand.with {
-            execute() { command -> assertEquals(expectedStatement.toString(), command.toString()) }
+            execute() { command -> assertEquals(expectedSqlCommand.toString(), command.toString()) }
             close() { }
         }
         def mockStatement = statementMocker.proxyInstance()
@@ -67,18 +71,20 @@ class MockDatabaseTest {
             createStatement() { mockStatement }
             close() { }
         }
+        def mockConnection = connectionMocker.proxyInstance()
 
         mySQLDataSourceMocker.demand.with {
-            setUrl() { url -> assertEquals(mySQLDatabase.url, url) }
+            setUrl() { url -> assertEquals(expectedDatabaseUrl, url) }
             setUser() { user -> assertEquals(mySQLDatabase.username, user) }
             setPassword() { password -> assertEquals(mySQLDatabase.password, password) }
-            getConnection() { connectionMocker.proxyInstance() }
+            getConnection() { mockConnection }
         }
 
         mySQLDataSourceMocker.use {
             closure.call()
         }
 
+        connectionMocker.verify(mockConnection)
         statementMocker.verify(mockStatement)
     }
 
