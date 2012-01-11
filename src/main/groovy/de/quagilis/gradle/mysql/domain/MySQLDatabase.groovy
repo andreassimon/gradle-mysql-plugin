@@ -63,4 +63,19 @@ class MySQLDatabase {
         closeResource(connection, logger)
     }
 
+    def dropDatabase(logger) {
+        def dataSource = new MysqlDataSource()
+        dataSource.url      = url
+        dataSource.user     = username
+        dataSource.password = password
+
+        def connection = dataSource.getConnection()
+
+        def statement = connection.createStatement()
+        statement.execute("DROP DATABASE ${ schema }")
+
+        closeResource(statement, logger)
+        closeResource(connection, logger)
+    }
+
 }

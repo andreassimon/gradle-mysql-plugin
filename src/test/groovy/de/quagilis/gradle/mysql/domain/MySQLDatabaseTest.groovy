@@ -63,6 +63,13 @@ public class MySQLDatabaseTest {
         }
     }
 
+    @Test
+    public void shouldExecuteDropDatabaseOnDataSource() {
+        assertSqlCommandIsExecutedOnDatabaseUrl("DROP DATABASE ${ database.schema }", database.url) {
+            database.dropDatabase()
+        }
+    }
+
     private def assertSqlCommandIsExecutedOnDatabaseUrl(GString expectedSqlCommand, String expectedDatabaseUrl, Closure closure) {
         statementMocker.demand.with {
             execute() { command -> assertEquals(expectedSqlCommand, command) }
