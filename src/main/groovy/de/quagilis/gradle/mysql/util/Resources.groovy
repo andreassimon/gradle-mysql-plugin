@@ -19,20 +19,18 @@
  *
  */
 
-package de.quagilis.gradle.mysql.tasks
+package de.quagilis.gradle.mysql.util
 
-import org.gradle.api.tasks.TaskAction
+import java.sql.SQLException
 
-
-class CreateMySQLDatabase extends MySQLTask {
-
-    @TaskAction
-    public void createDatabase() {
-        database.createDatabase(logger)
-    }
-
-    @Override
-    String sql(databasename) {
-        "CREATE DATABASE ${databasename}"
+class Resources {
+    static void closeResource(resource, logger) {
+        try{
+            if(resource != null) {
+                resource.close()
+            }
+        } catch(SQLException e) {
+            logger.error("", e)
+        }
     }
 }

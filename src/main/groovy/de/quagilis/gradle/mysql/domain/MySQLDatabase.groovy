@@ -21,7 +21,8 @@
 
 package de.quagilis.gradle.mysql.domain
 
-import java.sql.SQLException
+import static de.quagilis.gradle.mysql.util.Resources.*
+
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource
 
 
@@ -47,7 +48,7 @@ class MySQLDatabase {
         return dataSource
     }
 
-    def createDatabase() {
+    def createDatabase(logger) {
         def dataSource = new MysqlDataSource()
         dataSource.url      = url
         dataSource.user     = username
@@ -58,19 +59,8 @@ class MySQLDatabase {
         def statement = connection.createStatement()
         statement.execute("CREATE DATABASE ${ schema }")
 
-        closeResource(statement)
-        closeResource(connection)
-    }
-
-    private void closeResource(resource) {
-        try{
-            if(resource != null) {
-                resource.close()
-            }
-        } catch(SQLException e) {
-            // TODO logger setzen
-            logger.error("", e)
-        }
+        closeResource(statement, logger)
+        closeResource(connection, logger)
     }
 
 }

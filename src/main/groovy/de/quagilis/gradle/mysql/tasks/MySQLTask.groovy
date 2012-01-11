@@ -22,9 +22,12 @@
 package de.quagilis.gradle.mysql.tasks
 
 import java.sql.*
+
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.DefaultTask
+
 import de.quagilis.gradle.mysql.domain.MySQLDatabase
+import static de.quagilis.gradle.mysql.util.Resources.*
 
 
 abstract class MySQLTask extends DefaultTask {
@@ -45,22 +48,11 @@ abstract class MySQLTask extends DefaultTask {
         } catch(SQLException e) {
             logger.warn "\t" + e.getMessage()
         } finally {
-            closeResource(statement)
-            closeResource(connection)
+            closeResource(statement, logger)
+            closeResource(connection, logger)
         }
     }
 
     abstract String sql(databasename)
-
-
-    private void closeResource(resource) {
-        try{
-            if(resource != null) {
-                resource.close()
-            }
-        } catch(SQLException e) {
-            logger.error("", e)
-        }
-    }
 
 }
