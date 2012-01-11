@@ -34,7 +34,6 @@ abstract class MySQLTask extends DefaultTask {
         group = "MySQL"
     }
 
-    @TaskAction
     public void executeStatement() {
         def connection = null
         def statement = null;

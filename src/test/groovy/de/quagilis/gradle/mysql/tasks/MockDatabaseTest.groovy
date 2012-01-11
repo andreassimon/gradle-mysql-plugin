@@ -58,7 +58,7 @@ class MockDatabaseTest {
 
     void assertStatementIsExecuted(String expectedStatement, Closure closure) {
         statementMocker.demand.with {
-            executeUpdate() { command -> assertEquals(expectedStatement, command) }
+            execute() { command -> assertEquals(expectedStatement.toString(), command.toString()) }
             close() { }
         }
         def mockStatement = statementMocker.proxyInstance()
@@ -72,7 +72,7 @@ class MockDatabaseTest {
             setUrl() { url -> assertEquals(mySQLDatabase.url, url) }
             setUser() { user -> assertEquals(mySQLDatabase.username, user) }
             setPassword() { password -> assertEquals(mySQLDatabase.password, password) }
-            getConnection() { username, password -> connectionMocker.proxyInstance() }
+            getConnection() { connectionMocker.proxyInstance() }
         }
 
         mySQLDataSourceMocker.use {

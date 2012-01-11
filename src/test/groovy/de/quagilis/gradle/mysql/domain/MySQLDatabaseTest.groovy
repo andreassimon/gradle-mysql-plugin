@@ -26,10 +26,14 @@ import static org.junit.Assert.*
 
 import groovy.mock.interceptor.MockFor
 
+import java.sql.*
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource
 
 
 public class MySQLDatabaseTest {
+    def connectionMocker = new MockFor(Connection.class)
+    def statementMocker = new MockFor(Statement.class)
+
     MySQLDatabase database
 
     @Before
@@ -42,7 +46,7 @@ public class MySQLDatabaseTest {
     public void shouldConstructDataSource() {
         def mocker = new MockFor(MysqlDataSource.class);
         mocker.demand.with {
-            setUrl()      { urlParam      -> assertEquals(database.url/* + database.schema*/, urlParam) }
+            setUrl()      { urlParam      -> assertEquals(database.url + database.schema, urlParam) }
             setUser()     { userParam     -> assertEquals(database.username, userParam) }
             setPassword() { passwordParam -> assertEquals(database.password, passwordParam) }
         }
@@ -51,4 +55,35 @@ public class MySQLDatabaseTest {
             database.getDataSource()
         }
     }
+
+    @Test
+    public void shouldExecuteCreateDatabaseOnDataSource() {
+        statementMocker.demand.with {
+            execute() { command -> assertEquals("CREATE DATABASE ${ database.schema }", command) }
+            close() { }
+        }
+        def mockStatement = statementMocker.proxyInstance()
+
+        connectionMocker.demand.with {
+            createStatement() { mockStatement }
+            close() { }
+        }
+        def mockConnection = connectionMocker.proxyInstance()
+
+        def myslDataSourceMocker = new MockFor(MysqlDataSource.class);
+        myslDataSourceMocker.demand.with {
+            setUrl()      { urlParam      -> assertEquals(database.url, urlParam) }
+            setUser()     { userParam     -> assertEquals(database.username, userParam) }
+            setPassword() { passwordParam -> assertEquals(database.password, passwordParam) }
+            getConnection() { mockConnection }
+        }
+
+        myslDataSourceMocker.use {
+            database.createDatabase()
+        }
+
+        connectionMocker.verify(mockConnection)
+        statementMocker.verify(mockStatement)
+    }
+
 }

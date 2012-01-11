@@ -21,12 +21,13 @@
 
 package de.quagilis.gradle.mysql.domain
 
+import java.sql.SQLException
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource
 
 
 class MySQLDatabase {
     String name
-    String url      = "jdbc:mysql://localhost/"
+    private String url = "jdbc:mysql://localhost/"
     String schema
     String username = "root"
     String password = ""
@@ -35,11 +36,41 @@ class MySQLDatabase {
         this.name = name
     }
 
+    private String getUrl() { url }
+    public void setUrl(String _url) { url = _url }
+
     def getDataSource() {
         def dataSource = new MysqlDataSource()
-        dataSource.url      = url // + schema
+        dataSource.url      = url  + schema
         dataSource.user     = username
         dataSource.password = password
         return dataSource
     }
+
+    def createDatabase() {
+        def dataSource = new MysqlDataSource()
+        dataSource.url      = url
+        dataSource.user     = username
+        dataSource.password = password
+
+        def connection = dataSource.getConnection()
+
+        def statement = connection.createStatement()
+        statement.execute("CREATE DATABASE ${ schema }")
+
+        closeResource(statement)
+        closeResource(connection)
+    }
+
+    private void closeResource(resource) {
+        try{
+            if(resource != null) {
+                resource.close()
+            }
+        } catch(SQLException e) {
+            // TODO logger setzen
+            logger.error("", e)
+        }
+    }
+
 }
