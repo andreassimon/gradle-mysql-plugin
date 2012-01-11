@@ -25,12 +25,10 @@ import org.gradle.api.tasks.TaskAction
 
 
 class DropMySQLDatabase extends MySQLTask {
+
     @TaskAction
     public void createDatabase() {
         database.dropDatabase(logger)
     }
 
-    String sql(databasename) {
-        "DROP DATABASE ${databasename}"
-    }
 }

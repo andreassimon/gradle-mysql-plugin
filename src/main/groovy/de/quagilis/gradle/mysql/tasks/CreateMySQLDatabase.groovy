@@ -31,8 +31,4 @@ class CreateMySQLDatabase extends MySQLTask {
         database.createDatabase(logger)
     }
 
-    @Override
-    String sql(databasename) {
-        "CREATE DATABASE ${databasename}"
-    }
 }

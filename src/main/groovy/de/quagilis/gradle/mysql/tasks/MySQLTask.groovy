@@ -21,38 +21,17 @@
 
 package de.quagilis.gradle.mysql.tasks
 
-import java.sql.*
-
-import org.gradle.api.tasks.TaskAction
 import org.gradle.api.DefaultTask
 
 import de.quagilis.gradle.mysql.domain.MySQLDatabase
-import static de.quagilis.gradle.mysql.util.Resources.*
 
 
 abstract class MySQLTask extends DefaultTask {
+
     MySQLDatabase database = null
 
     public MySQLTask() {
         group = "MySQL"
     }
-
-    public void executeStatement() {
-        def connection = null
-        def statement = null;
-        try {
-            def dataSource = database.dataSource
-            connection = dataSource.getConnection(database.username, database.password)
-            statement = connection.createStatement()
-            statement.executeUpdate(sql(database.schema))
-        } catch(SQLException e) {
-            logger.warn "\t" + e.getMessage()
-        } finally {
-            closeResource(statement, logger)
-            closeResource(connection, logger)
-        }
-    }
-
-    abstract String sql(databasename)
 
 }
