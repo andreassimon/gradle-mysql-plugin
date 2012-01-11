@@ -58,8 +58,14 @@ public class MySQLDatabaseTest {
 
     @Test
     public void shouldExecuteCreateDatabaseOnDataSource() {
+        assertSqlCommandIsExecutedOnDatabaseUrl("CREATE DATABASE ${ database.schema }", database.url) {
+            database.createDatabase()
+        }
+    }
+
+    private def assertSqlCommandIsExecutedOnDatabaseUrl(GString expectedSqlCommand, String expectedDatabaseUrl, Closure closure) {
         statementMocker.demand.with {
-            execute() { command -> assertEquals("CREATE DATABASE ${ database.schema }", command) }
+            execute() { command -> assertEquals(expectedSqlCommand, command) }
             close() { }
         }
         def mockStatement = statementMocker.proxyInstance()
@@ -72,14 +78,14 @@ public class MySQLDatabaseTest {
 
         def myslDataSourceMocker = new MockFor(MysqlDataSource.class);
         myslDataSourceMocker.demand.with {
-            setUrl()      { urlParam      -> assertEquals(database.url, urlParam) }
-            setUser()     { userParam     -> assertEquals(database.username, userParam) }
+            setUrl() { urlParam -> assertEquals(expectedDatabaseUrl, urlParam) }
+            setUser() { userParam -> assertEquals(database.username, userParam) }
             setPassword() { passwordParam -> assertEquals(database.password, passwordParam) }
             getConnection() { mockConnection }
         }
 
         myslDataSourceMocker.use {
-            database.createDatabase()
+            closure.call()
         }
 
         connectionMocker.verify(mockConnection)
