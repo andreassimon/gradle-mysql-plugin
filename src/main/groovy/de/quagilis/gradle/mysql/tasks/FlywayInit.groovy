@@ -26,6 +26,7 @@ import de.quagilis.gradle.mysql.domain.MySQLDatabase
 
 class FlywayInit extends FlywayTask {
     MySQLDatabase database
+    String initialVersion = "0";
 
     FlywayInit() {
         this << taskAction
@@ -42,7 +43,8 @@ class FlywayInit extends FlywayTask {
             url: database.url,
             user: database.username,
             password: database.password,
-            schemas: database.schema)
+            schemas: database.schema,
+            initialVersion: initialVersion)
     }
 
 }
