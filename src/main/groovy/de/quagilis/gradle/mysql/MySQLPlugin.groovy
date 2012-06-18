@@ -35,6 +35,7 @@ class MySQLPlugin implements Plugin<Project> {
         project.dependencies {
             gradleMysqlPlugin "mysql:mysql-connector-java:5.0.5"
             gradleMysqlPlugin "com.googlecode.flyway:flyway-ant:1.5"
+            gradleMysqlPlugin "com.googlecode.flyway:flyway-core:1.5"
         }
     }
 
