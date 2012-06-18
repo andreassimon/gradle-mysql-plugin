@@ -21,30 +21,29 @@
 
 package de.quagilis.gradle.mysql.tasks
 
+import com.googlecode.flyway.core.Flyway
+import com.googlecode.flyway.core.init.InitException
+import com.googlecode.flyway.core.migration.SchemaVersion
 import de.quagilis.gradle.mysql.domain.MySQLDatabase
+import org.gradle.api.tasks.TaskAction
 
 
 class FlywayInit extends FlywayTask {
     MySQLDatabase database
     String initialVersion = "0";
 
-    FlywayInit() {
-        this << taskAction
-    }
+    @TaskAction
+    public initSchema() {
+        Flyway flyway = new Flyway()
 
-    def taskAction = {
-        ant.taskdef(
-            name: 'flywayInit',
-            classname: 'com.googlecode.flyway.ant.InitTask',
-            classpath: project.configurations.gradleMysqlPlugin.asPath)
+        flyway.dataSource     = database.dataSource
+        flyway.initialVersion = new SchemaVersion(initialVersion)
 
-        ant.flywayInit(
-            driver: 'com.mysql.jdbc.Driver',
-            url: database.url,
-            user: database.username,
-            password: database.password,
-            schemas: database.schema,
-            initialVersion: initialVersion)
+        try {
+            flyway.init()
+        } catch (InitException initException) {
+            logger.warn initException.message
+        }
     }
 
 }
