@@ -48,7 +48,7 @@ Migrations have to conform to the format
 e.g.
     20120110170000__create-table-user.sql
 
-Run "gradle tasks" and see under the "MySQL", "Flyway", and "Developer Machine Setup" groups
+Run "gradle tasks" and see under the "MySQL", "Database", and "Developer Machine Setup" groups
 what tasks were added to your build.
 
 
