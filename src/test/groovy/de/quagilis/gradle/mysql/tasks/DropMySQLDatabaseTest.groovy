@@ -35,7 +35,7 @@ public class DropMySQLDatabaseTest extends MockDatabaseTest {
 
     @Test
     public void shouldExecuteDropDatabaseOnDataSource() {
-        assertStatementIsExecuted("DROP DATABASE test_database") {
+        assertStatementIsExecuted("DROP DATABASE IF EXISTS test_database") {
             Task dropDatabaseTask = project.task(type: DropMySQLDatabase, "dropDatabaseTask") {
                 database = mySQLDatabase
             }

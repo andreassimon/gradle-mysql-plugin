@@ -72,7 +72,7 @@ class MySQLDatabase {
     }
 
     def dropDatabase() {
-        executeMySqlAdminCommand("DROP DATABASE ${ schema }")
+        executeMySqlAdminCommand("DROP DATABASE IF EXISTS ${ schema }")
     }
 
 }

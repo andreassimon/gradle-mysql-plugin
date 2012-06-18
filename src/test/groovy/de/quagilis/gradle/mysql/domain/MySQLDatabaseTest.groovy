@@ -69,7 +69,7 @@ public class MySQLDatabaseTest extends MockDatabaseTest{
 
     @Test
     public void shouldExecuteDropDatabaseOnDataSource() {
-        assertSqlCommandIsExecutedOnDatabaseUrl("DROP DATABASE ${ mySQLDatabase.schema }", mySQLDatabase.url) {
+        assertSqlCommandIsExecutedOnDatabaseUrl("DROP DATABASE IF EXISTS ${ mySQLDatabase.schema }", mySQLDatabase.url) {
             mySQLDatabase.dropDatabase()
         }
     }
