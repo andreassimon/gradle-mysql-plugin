@@ -62,7 +62,7 @@ public class MySQLDatabaseTest extends MockDatabaseTest{
 
     @Test
     public void shouldExecuteCreateDatabaseOnDataSource() {
-        assertSqlCommandIsExecutedOnDatabaseUrl("CREATE DATABASE ${ mySQLDatabase.schema }", mySQLDatabase.url) {
+        assertSqlCommandIsExecutedOnDatabaseUrl("CREATE DATABASE IF NOT EXISTS ${ mySQLDatabase.schema }", mySQLDatabase.url) {
             mySQLDatabase.createDatabase()
         }
     }

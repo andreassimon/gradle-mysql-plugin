@@ -51,7 +51,7 @@ class MySQLDatabase {
     }
 
     def createDatabase() {
-        executeMySqlAdminCommand("CREATE DATABASE ${ schema }")
+        executeMySqlAdminCommand("CREATE DATABASE IF NOT EXISTS ${ schema }")
     }
 
     private def executeMySqlAdminCommand(GString sqlCommand) {

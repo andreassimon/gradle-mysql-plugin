@@ -35,7 +35,7 @@ public class CreateMySQLDatabaseTest extends MockDatabaseTest {
 
     @Test
     public void shouldExecuteCreateDatabaseOnDataSource() {
-        assertStatementIsExecuted("CREATE DATABASE test_database") {
+        assertStatementIsExecuted("CREATE DATABASE IF NOT EXISTS test_database") {
             Task createDatabaseTask = project.task(type: CreateMySQLDatabase, "createDatabaseTask") {
                 database = mySQLDatabase
             }
