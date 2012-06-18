@@ -26,6 +26,6 @@ import org.gradle.api.DefaultTask
 
 abstract class FlywayTask extends DefaultTask {
     public FlywayTask() {
-        group = "Flyway"
+        group = "Database"
     }
 }
