@@ -1,4 +1,4 @@
-gradle-mysql-plugin, version 0.1.2
+gradle-mysql-plugin, version 0.1.3
 ==================================
 
 This plugin adds some tasks for the creation and deletion of MySQL databases and the versioned
@@ -20,7 +20,8 @@ Usage
             }
         }
         dependencies {
-            classpath 'andreassimon:gradle-mysql-plugin:0.1.2'
+            classpath 'andreassimon:gradle-mysql-plugin:0.1.3'
+            classpath 'com.googlecode.flyway:flyway-core:1.6.1'
         }
     }
 
