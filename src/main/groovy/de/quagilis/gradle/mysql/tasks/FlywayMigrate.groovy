@@ -21,30 +21,22 @@
 
 package de.quagilis.gradle.mysql.tasks
 
+import com.googlecode.flyway.core.Flyway
 import de.quagilis.gradle.mysql.domain.MySQLDatabase
+import org.gradle.api.tasks.TaskAction
 
 
 class FlywayMigrate extends FlywayTask {
     MySQLDatabase database
 
-    FlywayMigrate() {
-        this << taskAction
-    }
+    @TaskAction
+    public migrateSchema() {
+        Flyway flyway = new Flyway()
 
-    def taskAction = {
-        def antClasspath = project.configurations.gradleMysqlPlugin + project.files(project.migrationsDir)
-        ant.taskdef(
-            name: 'flywayMigrate',
-            classname: 'com.googlecode.flyway.ant.MigrateTask',
-            classpath: antClasspath.asPath)
-
-        ant.flywayMigrate(
-            driver: 'com.mysql.jdbc.Driver',
-            url: "jdbc:mysql://localhost/${ database.schema }",
-            user: database.username,
-            password: database.password,
-            baseDir: '',
-            sqlMigrationPrefix: '')
+        flyway.dataSource = database.dataSource
+        flyway.baseDir = '' //project.files(project.migrationsDir)
+        flyway.sqlMigrationPrefix = ''
+        flyway.migrate()
     }
 
 }
