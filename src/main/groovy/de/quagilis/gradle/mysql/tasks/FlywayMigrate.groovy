@@ -24,6 +24,7 @@ package de.quagilis.gradle.mysql.tasks
 import com.googlecode.flyway.core.Flyway
 import de.quagilis.gradle.mysql.domain.MySQLDatabase
 import org.gradle.api.tasks.TaskAction
+import org.gradle.util.ObservableUrlClassLoader
 
 
 class FlywayMigrate extends FlywayTask {
@@ -33,8 +34,11 @@ class FlywayMigrate extends FlywayTask {
     public migrateSchema() {
         Flyway flyway = new Flyway()
 
+        ObservableUrlClassLoader contextClassLoader = (ObservableUrlClassLoader) Thread.currentThread().getContextClassLoader()
+        contextClassLoader.addURL project.migrationsDir.toURL()
+
         flyway.dataSource = database.dataSource
-        flyway.baseDir = '' //project.files(project.migrationsDir)
+        flyway.baseDir    = ''
         flyway.sqlMigrationPrefix = ''
         flyway.migrate()
     }
